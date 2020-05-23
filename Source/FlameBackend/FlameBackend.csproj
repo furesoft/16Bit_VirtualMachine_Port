@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Flame.Front" Version="0.10.2" />
+    <PackageReference Include="Flame.Optimization" Version="0.10.2" />
+    <PackageReference Include="Flame.Compiler" Version="0.10.2" />
+    <PackageReference Include="Flame.Build.Lazy" Version="0.10.2" />
+    <PackageReference Include="Flame.Core" Version="1.0.0.16" />
+  </ItemGroup>
+</Project>

@@ -1,4 +1,6 @@
 ﻿using System;
+using BitVm.Lib;
+using BitVm.Lib.MemoryImplementations;
 
 namespace VmRunner
 {
@@ -6,7 +8,8 @@ namespace VmRunner
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var cpu = new CPU(new ArrayMemory());
+
         }
     }
 }
