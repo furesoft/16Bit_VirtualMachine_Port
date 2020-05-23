@@ -9,10 +9,13 @@ namespace BitVm.Lib
         public byte[] Registers;
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
+        public byte[] Memory;
 
-        public CPU(IMemory registerMemory, byte[] program)
+        public CPU(IMemory memory, byte[] program)
         {
-            this.Registers = registerMemory.Create(Enum.GetNames(typeof(Registers)).Length * 2);
+            this.Registers = memory.Create(Enum.GetNames(typeof(Registers)).Length * 2);
+            Memory = memory.Create(15);
+
             RegisterMap = new Dictionary<Registers, int>();
 
             initRegisterMap();
