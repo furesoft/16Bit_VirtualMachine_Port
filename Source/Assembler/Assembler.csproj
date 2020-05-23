@@ -8,4 +8,10 @@
   <ItemGroup>
     <ProjectReference Include="..\16BitVm\16BitVm.Lib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Sprache" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AST\" />
+  </ItemGroup>
 </Project>
