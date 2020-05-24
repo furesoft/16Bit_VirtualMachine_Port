@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BitVm.Lib.Instructions.Move;
 
 namespace BitVm.Lib
 {
@@ -10,6 +11,7 @@ namespace BitVm.Lib
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
         public byte[] Memory;
+        public Dictionary<OpCodes, IInstruction> Instructions;
 
         public CPU(IMemory memory, byte[] program)
         {
@@ -17,10 +19,19 @@ namespace BitVm.Lib
             Memory = memory.Create(15);
 
             RegisterMap = new Dictionary<Registers, int>();
+            Instructions = new Dictionary<OpCodes, IInstruction>();
 
             initRegisterMap();
 
             this.Program = program;
+
+            initInstructions();
+        }
+
+        private void initInstructions()
+        {
+            Instructions.Add(OpCodes.Mov_Lit_Reg, new MovLitRegInstruction());
+            Instructions.Add(OpCodes.Mov_Reg_Reg, new MovRegRegInstruction());
         }
 
         private void initRegisterMap()
@@ -81,35 +92,18 @@ namespace BitVm.Lib
         public void Step()
         {
             var instr = Fetch();
-            Step((Instructions)instr);
+            Step((OpCodes)instr);
         }
 
-        public void Step(Instructions instruction)
+        public void Step(OpCodes instruction)
         {
-            switch (instruction)
+            if (Instructions.ContainsKey(instruction))
             {
-                case Instructions.Mov_Lit_Reg:
-                    var literal = Fetch16();
-                    var reg = Fetch();
-
-                    SetRegister(reg, literal);
-                    break;
-                case Instructions.Mov_Reg_Reg:
-                    var fromReg = Fetch();
-                    var toReg = Fetch();
-
-                    var fromValue = GetRegister(fromReg);
-
-                    SetRegister(toReg, fromValue);
-
-                    break;
-                case Instructions.Add_Reg_Reg:
-                    var reg1 = FetchRegister();
-                    var reg2 = FetchRegister();
-
-                    SetRegister(Lib.Registers.Acc, (short)(GetRegister(reg1) + GetRegister(reg2)));
-
-                    break;
+                Instructions[instruction].Invoke(this);
+            }
+            else
+            {
+                throw new Exception("unknown opcode");
             }
         }
 

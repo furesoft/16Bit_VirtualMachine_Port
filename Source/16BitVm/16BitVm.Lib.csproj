@@ -13,6 +13,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="MemoryImplementations\" />
+    <Folder Include="Instructions\" />
+    <Folder Include="Instructions\Move\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
