@@ -4,6 +4,7 @@ using System.Linq;
 using BitVm.Lib.Instructions.Arithmetik.Add;
 using BitVm.Lib.Instructions.Jumps;
 using BitVm.Lib.Instructions.Move;
+using BitVm.Lib.Instructions.Stack;
 
 namespace BitVm.Lib
 {
@@ -42,8 +43,13 @@ namespace BitVm.Lib
             //add instructions
             Instructions.Add(OpCodes.ADD_REG_REG, new AddRegRegInstruction());
 
-            //jumo instructions
+            //jump instructions
             Instructions.Add(OpCodes.JMP_NOT_EQ, new JmpNotEqualInstruction());
+
+            //stack instructions
+            Instructions.Add(OpCodes.POP, new PopInstruction());
+            Instructions.Add(OpCodes.PSH_LIT, new PushLitInstruction());
+            Instructions.Add(OpCodes.PSH_REG, new PushRegInstruction());
         }
 
         private void initRegisterMap()
