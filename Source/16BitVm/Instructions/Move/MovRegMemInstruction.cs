@@ -10,7 +10,7 @@
             var address = cpu.Fetch16();
             var value = cpu.GetRegister(registerFrom);
 
-            cpu.Memory.SetInt16(address, value);
+            cpu.Memory.SetUInt16(address, value);
         }
     }
 }

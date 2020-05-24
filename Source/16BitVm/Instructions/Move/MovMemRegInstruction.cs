@@ -8,7 +8,7 @@
         {
             var address = cpu.Fetch16();
             var registerTo = cpu.FetchRegister();
-            var value = cpu.Memory.GetInt16(address);
+            var value = cpu.Memory.GetUInt16(address);
 
             cpu.SetRegister(registerTo, value);
         }

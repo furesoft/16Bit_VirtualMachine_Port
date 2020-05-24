@@ -12,7 +12,7 @@ namespace BitVm.Lib.Instructions.Arithmetik.Add
             var registerValue1 = cpu.GetRegister(r1);
             var registerValue2 = cpu.GetRegister(r2);
 
-            cpu.SetRegister(Registers.Acc, (short)(registerValue1 + registerValue2));
+            cpu.SetRegister(Registers.Acc, (ushort)(registerValue1 + registerValue2));
         }
     }
 }

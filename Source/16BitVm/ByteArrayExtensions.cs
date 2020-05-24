@@ -5,14 +5,14 @@ namespace BitVm.Lib
 {
     public static class ByteArrayExtensions
     {
-        public static short GetInt16(this byte[] src, short address)
+        public static ushort GetUInt16(this byte[] src, ushort address)
         {
-            var bytes = src.Skip(address).Take(2).ToArray();
+            var bytes = src.Skip(address).Take(sizeof(ushort)).ToArray();
 
-            return BitConverter.ToInt16(bytes, 0);
+            return BitConverter.ToUInt16(bytes, 0);
         }
 
-        public static void SetInt16(this byte[] src, short address, short value)
+        public static void SetUInt16(this byte[] src, ushort address, ushort value)
         {
             var bytes = BitConverter.GetBytes(value);
 
