@@ -28,13 +28,8 @@ namespace BitVm.Lib.Devices
                 eraseScreen();
             }
 
-            var x = (address % 16) + 1;
-            var y = (int)Math.Floor((decimal)(address / 16)) + 1;
-
-            moveTo(x * 2, y);
-
             var character = (char)characterValue;
-            Console.Out.Write(character);
+            Console.Write(character);
         }
 
         public void SetUInt8(ushort address, ushort value)
@@ -45,11 +40,6 @@ namespace BitVm.Lib.Devices
         void eraseScreen()
         {
             Console.Clear();
-        }
-
-        void moveTo(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
         }
     }
 }

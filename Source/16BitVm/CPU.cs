@@ -13,17 +13,15 @@ namespace BitVm.Lib
 {
     public class CPU
     {
-        public IDevice Registers;
+        public byte[] Registers;
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
-        public MemoryDevice Memory;
         public Dictionary<OpCodes, IInstruction> Instructions;
         public int StackFrameSize = 0;
 
-        public CPU(IDevice memory, byte[] program)
+        public CPU(byte[] program)
         {
-            this.Registers = memory.Create(Enum.GetNames(typeof(Registers)).Length * 2);
-            Memory = (MemoryDevice)memory.Create(256 * 256);
+            this.Registers = new byte[Enum.GetNames(typeof(Registers)).Length * 2];
 
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
@@ -156,7 +154,7 @@ namespace BitVm.Lib
         public void Push(ushort value)
         {
             var spAddress = GetRegister(Lib.Registers.SP);
-            Memory.SetUInt16(spAddress, value);
+            MemoryMapper.SetUInt16(spAddress, value);
             SetRegister(Lib.Registers.SP, (ushort)(spAddress - 2));
             StackFrameSize += 2;
         }
@@ -167,7 +165,7 @@ namespace BitVm.Lib
             SetRegister(Lib.Registers.SP, (ushort)nextSpAddress);
             StackFrameSize -= 2;
 
-            return Memory.GetUInt16((ushort)nextSpAddress);
+            return MemoryMapper.GetUInt16((ushort)nextSpAddress);
         }
 
         public void PushState()
