@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BitVm.Lib.Instructions.Arithmetik.Add;
+using BitVm.Lib.Instructions.Jumps;
 using BitVm.Lib.Instructions.Move;
 
 namespace BitVm.Lib
@@ -16,7 +18,7 @@ namespace BitVm.Lib
         public CPU(IMemory memory, byte[] program)
         {
             this.Registers = memory.Create(Enum.GetNames(typeof(Registers)).Length * 2);
-            Memory = memory.Create(15);
+            Memory = memory.Create(256 * 256);
 
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
@@ -30,8 +32,17 @@ namespace BitVm.Lib
 
         private void initInstructions()
         {
-            Instructions.Add(OpCodes.Mov_Lit_Reg, new MovLitRegInstruction());
-            Instructions.Add(OpCodes.Mov_Reg_Reg, new MovRegRegInstruction());
+            //move instructions
+            Instructions.Add(OpCodes.MOV_LIT_REG, new MovLitRegInstruction());
+            Instructions.Add(OpCodes.MOV_REG_REG, new MovRegRegInstruction());
+            Instructions.Add(OpCodes.MOV_MEM_REG, new MovMemRegInstruction());
+            Instructions.Add(OpCodes.MOV_REG_MEM, new MovRegMemInstruction());
+
+            //add instructions
+            Instructions.Add(OpCodes.ADD_REG_REG, new AddRegRegInstruction());
+
+            //jumo instructions
+            Instructions.Add(OpCodes.JMP_NOT_EQ, new JmpNotEqualInstruction());
         }
 
         private void initRegisterMap()

@@ -1,0 +1,18 @@
+﻿using System;
+namespace BitVm.Lib.Instructions.Arithmetik.Add
+{
+    public class AddRegRegInstruction : IInstruction
+    {
+        public OpCodes Instruction => OpCodes.ADD_REG_REG;
+
+        public void Invoke(CPU cpu)
+        {
+            var r1 = cpu.FetchRegister();
+            var r2 = cpu.FetchRegister();
+            var registerValue1 = cpu.GetRegister(r1);
+            var registerValue2 = cpu.GetRegister(r2);
+
+            cpu.SetRegister(Registers.Acc, (short)(registerValue1 + registerValue2));
+        }
+    }
+}

@@ -2,7 +2,7 @@
 {
     public class MovRegRegInstruction : IInstruction
     {
-        public OpCodes Instruction => OpCodes.Mov_Reg_Reg;
+        public OpCodes Instruction => OpCodes.MOV_REG_REG;
 
         public void Invoke(CPU cpu)
         {
