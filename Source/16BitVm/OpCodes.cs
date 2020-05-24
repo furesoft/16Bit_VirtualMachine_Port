@@ -20,10 +20,11 @@
         MUL_LIT_REG = 0x20,
         MUL_REG_REG = 0x21,
 
-         LSF_REG_LIT = 0x26,
- LSF_REG_REG = 0x27,
- RSF_REG_LIT = 0x2A,
- RSF_REG_REG = 0x2B,
+        LSF_REG_LIT = 0x26,
+        LSF_REG_REG = 0x27,
+
+        RSF_REG_LIT = 0x2A,
+        RSF_REG_REG = 0x2B,
 
         INC_REG = 0x35,
         DEC_REG = 0x36,
@@ -39,5 +40,13 @@
         RET = 0x60,
 
         HLT = 0xFF,
+
+         AND_REG_LIT = 0x2E,
+ AND_REG_REG = 0x2F,
+ OR_REG_LIT = 0x30,
+ OR_REG_REG = 0x31,
+ XOR_REG_LIT = 0x32,
+ XOR_REG_REG = 0x33,
+ NOT = 0x34,
     }
 }

@@ -23,6 +23,7 @@
     <Folder Include="Instructions\Arithmetik\Sub\" />
     <Folder Include="Instructions\Arithmetik\Mul\" />
     <Folder Include="Instructions\Shifting\" />
+    <Folder Include="Instructions\Logical\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
