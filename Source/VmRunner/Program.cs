@@ -1,6 +1,8 @@
 ﻿using System;
 using BitVm.Lib;
 using BitVm.Lib.Devices;
+using BitVm.Lib.Parsing;
+using Sprache;
 
 namespace VmRunner
 {
@@ -26,6 +28,10 @@ namespace VmRunner
 
             cpu.DumpRegisters();
             Console.WriteLine();
+
+            var asm = "mov $42, r4";
+            var p = new AsmPrimitiveGrammar();
+            var result = p.movLitToReg().Parse(asm);
         }
     }
 }

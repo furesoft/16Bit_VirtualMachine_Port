@@ -24,6 +24,11 @@
     <Folder Include="Instructions\Arithmetik\Mul\" />
     <Folder Include="Instructions\Shifting\" />
     <Folder Include="Instructions\Logical\" />
+    <Folder Include="Parsing\" />
+    <Folder Include="Parsing\AST\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Sprache" Version="2.3.0" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
