@@ -19,6 +19,7 @@
     <Folder Include="Instructions\Arithmetik\Add\" />
     <Folder Include="Instructions\Jumps\" />
     <Folder Include="Instructions\Stack\" />
+    <Folder Include="Instructions\Calls\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

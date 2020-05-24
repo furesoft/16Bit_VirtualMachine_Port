@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BitVm.Lib.Instructions.Arithmetik.Add;
+using BitVm.Lib.Instructions.Calls;
 using BitVm.Lib.Instructions.Jumps;
 using BitVm.Lib.Instructions.Move;
 using BitVm.Lib.Instructions.Stack;
@@ -50,6 +51,11 @@ namespace BitVm.Lib
             Instructions.Add(OpCodes.POP, new PopInstruction());
             Instructions.Add(OpCodes.PSH_LIT, new PushLitInstruction());
             Instructions.Add(OpCodes.PSH_REG, new PushRegInstruction());
+
+            //call instructions
+            Instructions.Add(OpCodes.CAL_LIT, new CallLitInstruction());
+            Instructions.Add(OpCodes.CAL_REG, new CallRegInstruction());
+            Instructions.Add(OpCodes.RET, new RetInstruction());
         }
 
         private void initRegisterMap()
@@ -158,6 +164,50 @@ namespace BitVm.Lib
             StackFrameSize -= 2;
 
             return Memory.GetInt16((short)nextSpAddress);
+        }
+
+        public void PushState()
+        {
+            Push(this.GetRegister(Lib.Registers.R1));
+            Push(this.GetRegister(Lib.Registers.R2));
+            Push(this.GetRegister(Lib.Registers.R3));
+            Push(this.GetRegister(Lib.Registers.R4));
+            Push(this.GetRegister(Lib.Registers.R5));
+            Push(this.GetRegister(Lib.Registers.R6));
+            Push(this.GetRegister(Lib.Registers.R7));
+            Push(this.GetRegister(Lib.Registers.R8));
+            Push(this.GetRegister(Lib.Registers.IP));
+            Push((short)(StackFrameSize + 2));
+
+            SetRegister(Lib.Registers.FP, GetRegister(Lib.Registers.SP));
+            StackFrameSize = 0;
+        }
+
+        public void PopState()
+        {
+            var framePointerAddress = GetRegister(Lib.Registers.FP);
+            this.SetRegister(Lib.Registers.SP, framePointerAddress);
+
+            StackFrameSize = Pop();
+            var stackFrameSize = StackFrameSize;
+
+            SetRegister(Lib.Registers.IP, Pop());
+            SetRegister(Lib.Registers.R8, Pop());
+            SetRegister(Lib.Registers.R7, Pop());
+            SetRegister(Lib.Registers.R6, Pop());
+            SetRegister(Lib.Registers.R5, Pop());
+            SetRegister(Lib.Registers.R4, Pop());
+            SetRegister(Lib.Registers.R3, Pop());
+            SetRegister(Lib.Registers.R2, Pop());
+            SetRegister(Lib.Registers.R1, Pop());
+
+            var nArgs = Pop();
+            for (var i = 0; i < nArgs; i++)
+            {
+                Pop();
+            }
+
+            SetRegister(Lib.Registers.FP, (short)(framePointerAddress + stackFrameSize));
         }
     }
 }
