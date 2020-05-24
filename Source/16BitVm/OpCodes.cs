@@ -30,6 +30,17 @@
         DEC_REG = 0x36,
 
         JMP_NOT_EQ = 0x15,
+        JNE_REG = 0x40,
+        JEQ_REG = 0x3E,
+        JEQ_LIT = 0x41,
+        JLT_REG = 0x42,
+        JLT_LIT = 0x43,
+        JGT_REG = 0x44,
+        JGT_LIT = 0x45,
+        JLE_REG = 0x46,
+        JLE_LIT = 0x47,
+        JGE_REG = 0x48,
+        JGE_LIT = 0x49,
 
         PSH_LIT = 0x17,
         PSH_REG = 0x18,
@@ -41,12 +52,13 @@
 
         HLT = 0xFF,
 
-         AND_REG_LIT = 0x2E,
- AND_REG_REG = 0x2F,
- OR_REG_LIT = 0x30,
- OR_REG_REG = 0x31,
- XOR_REG_LIT = 0x32,
- XOR_REG_REG = 0x33,
- NOT = 0x34,
+        AND_REG_LIT = 0x2E,
+        AND_REG_REG = 0x2F,
+        OR_REG_LIT = 0x30,
+        OR_REG_REG = 0x31,
+        XOR_REG_LIT = 0x32,
+        XOR_REG_REG = 0x33,
+        NOT = 0x34,
+
     }
 }
