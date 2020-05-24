@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using BitVm.Lib.Devices;
 using BitVm.Lib.Instructions;
 using BitVm.Lib.Instructions.Arithmetik.Add;
@@ -8,6 +9,7 @@ using BitVm.Lib.Instructions.Arithmetik.Mul;
 using BitVm.Lib.Instructions.Arithmetik.Sub;
 using BitVm.Lib.Instructions.Calls;
 using BitVm.Lib.Instructions.Jumps;
+using BitVm.Lib.Instructions.Logical;
 using BitVm.Lib.Instructions.Move;
 using BitVm.Lib.Instructions.Shifting;
 using BitVm.Lib.Instructions.Stack;
@@ -40,46 +42,14 @@ namespace BitVm.Lib
 
         private void initInstructions()
         {
-            //move instructions
-            Instructions.Add(OpCodes.MOV_LIT_REG, new MovLitRegInstruction());
-            Instructions.Add(OpCodes.MOV_REG_REG, new MovRegRegInstruction());
-            Instructions.Add(OpCodes.MOV_MEM_REG, new MovMemRegInstruction());
-            Instructions.Add(OpCodes.MOV_REG_MEM, new MovRegMemInstruction());
+            var types = Assembly.GetCallingAssembly().GetTypes().Where(_ => _.GetInterfaces().Contains(typeof(IInstruction)));
+            foreach (var t in types)
+            {
+                var instance = (IInstruction)Activator.CreateInstance(t);
 
-            //add instructions
-            Instructions.Add(OpCodes.ADD_REG_REG, new AddRegRegInstruction());
-            Instructions.Add(OpCodes.ADD_LIT_REG, new AddLitRegInstruction());
+                Instructions.Add(instance.Instruction, instance);
+            }
 
-            //sub instructions
-            Instructions.Add(OpCodes.SUB_REG_REG, new SubRegRegInstruction());
-            Instructions.Add(OpCodes.SUB_REG_LIT, new SubRegLitInstruction());
-            Instructions.Add(OpCodes.SUB_LIT_REG, new SubLitRegInstruction());
-
-            //sub instructions
-            Instructions.Add(OpCodes.MUL_REG_REG, new MulRegRegInstruction());
-            Instructions.Add(OpCodes.MUL_LIT_REG, new MulLitRegInstruction());
-
-            //jump instructions
-            Instructions.Add(OpCodes.JMP_NOT_EQ, new JmpNotEqualInstruction());
-
-            //stack instructions
-            Instructions.Add(OpCodes.POP, new PopInstruction());
-            Instructions.Add(OpCodes.PSH_LIT, new PushLitInstruction());
-            Instructions.Add(OpCodes.PSH_REG, new PushRegInstruction());
-
-            //call instructions
-            Instructions.Add(OpCodes.CAL_LIT, new CallLitInstruction());
-            Instructions.Add(OpCodes.CAL_REG, new CallRegInstruction());
-            Instructions.Add(OpCodes.RET, new RetInstruction());
-
-            //shift instructions
-            Instructions.Add(OpCodes.LSF_REG_LIT, new LsfRegLitInstruction());
-            Instructions.Add(OpCodes.LSF_REG_REG, new LsfRegRegInstruction());
-            Instructions.Add(OpCodes.RSF_REG_LIT, new RsfRegLitInstruction());
-            Instructions.Add(OpCodes.RSF_REG_REG, new RsfRegRegInstruction());
-
-            //other instructions
-            Instructions.Add(OpCodes.HLT, new HltInstruction());
         }
 
         private void initRegisterMap()
