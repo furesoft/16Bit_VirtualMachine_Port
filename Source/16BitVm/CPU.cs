@@ -14,6 +14,7 @@ namespace BitVm.Lib
         public byte[] Program;
         public byte[] Memory;
         public Dictionary<OpCodes, IInstruction> Instructions;
+        public int StackFrameSize = 0;
 
         public CPU(IMemory memory, byte[] program)
         {
@@ -134,6 +135,23 @@ namespace BitVm.Lib
             var joined = string.Join(" ", hexBytes);
 
             Console.WriteLine(address.ToString("x") + ": " + joined);
+        }
+
+        public void Push(short value)
+        {
+            var spAddress = GetRegister(Lib.Registers.SP);
+            Memory.SetInt16(spAddress, value);
+            SetRegister(Lib.Registers.SP, (short)(spAddress - 2));
+            StackFrameSize += 2;
+        }
+
+        public short Pop()
+        {
+            var nextSpAddress = GetRegister(Lib.Registers.SP) + 2;
+            SetRegister(Lib.Registers.SP, (short)nextSpAddress);
+            StackFrameSize -= 2;
+
+            return Memory.GetInt16((short)nextSpAddress);
         }
     }
 }

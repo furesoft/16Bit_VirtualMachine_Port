@@ -13,6 +13,8 @@ namespace BitVm.Lib
         R5,
         R6,
         R7,
-        R8
+        R8,
+        SP,
+        FP,
     }
 }
