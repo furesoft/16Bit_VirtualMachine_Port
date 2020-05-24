@@ -5,11 +5,13 @@ namespace BitVm.Lib.Instructions.Stack
     {
         public OpCodes Instruction => OpCodes.POP;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var register = cpu.FetchRegister();
             var value = cpu.Pop();
             cpu.SetRegister(register, value);
+
+            return false;
         }
     }
 }

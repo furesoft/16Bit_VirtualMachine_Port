@@ -5,11 +5,13 @@ namespace BitVm.Lib.Instructions.Calls
     {
         public OpCodes Instruction => OpCodes.CAL_LIT;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var address = cpu.Fetch16();
             cpu.PushState();
             cpu.SetRegister(Registers.IP, address);
+
+            return false;
         }
     }
 }

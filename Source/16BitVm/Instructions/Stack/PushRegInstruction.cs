@@ -4,10 +4,12 @@
     {
         public OpCodes Instruction => OpCodes.PSH_REG;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var register = cpu.FetchRegister();
             cpu.Push(cpu.GetRegister(register));
+
+            return false;
         }
     }
 }

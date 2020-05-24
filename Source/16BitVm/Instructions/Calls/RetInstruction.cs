@@ -4,9 +4,11 @@
     {
         public OpCodes Instruction => OpCodes.RET;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             cpu.PopState();
+
+            return false;
         }
     }
 }

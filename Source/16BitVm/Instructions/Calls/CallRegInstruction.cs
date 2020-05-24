@@ -4,12 +4,14 @@
     {
         public OpCodes Instruction => OpCodes.CAL_REG;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var register = cpu.FetchRegister();
             var address = cpu.GetRegister(register);
             cpu.PushState();
             cpu.SetRegister(Registers.IP, address);
+
+            return false;
         }
     }
 }

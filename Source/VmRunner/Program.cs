@@ -1,6 +1,6 @@
 ﻿using System;
 using BitVm.Lib;
-using BitVm.Lib.MemoryImplementations;
+using BitVm.Lib.Devices;
 
 namespace VmRunner
 {
@@ -9,22 +9,23 @@ namespace VmRunner
         static void Main(string[] args)
         {
             var program = new byte[] {
-                (byte)OpCodes.MOV_LIT_REG, 42,0, (byte)Registers.R5,
-                (byte)OpCodes.MOV_REG_REG, (byte)Registers.R5, (byte)Registers.R6,
+                (byte)OpCodes.MOV_LIT_REG, 0x02, 65, (byte)Registers.R5,
+                (byte)OpCodes.MOV_REG_MEM, (byte)Registers.R5, 0x30, 0,
+                (byte)OpCodes.HLT
              };
+             
+            var memory = new MemoryDevice();
 
-            var cpu = new CPU(new ArrayMemory(), program);
-            cpu.Step();
+            MemoryMapper.Map(memory, 0, 0xffff);
 
-            cpu.DumpRegisters();
-            Console.WriteLine();
+            // Map 0xFF bytes of the address space to an "output device" - just stdout
+            MemoryMapper.Map(new ScreenDevice(), 0x3000, 0x30ff, true);
 
-            cpu.Step();
+            var cpu = new CPU(memory, program);
+            cpu.Run();
 
             cpu.DumpRegisters();
             Console.WriteLine();
         }
-
-
     }
 }

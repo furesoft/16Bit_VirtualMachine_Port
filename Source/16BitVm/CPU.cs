@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BitVm.Lib.Devices;
+using BitVm.Lib.Instructions;
 using BitVm.Lib.Instructions.Arithmetik.Add;
 using BitVm.Lib.Instructions.Calls;
 using BitVm.Lib.Instructions.Jumps;
@@ -11,17 +13,17 @@ namespace BitVm.Lib
 {
     public class CPU
     {
-        public byte[] Registers;
+        public IDevice Registers;
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
-        public byte[] Memory;
+        public MemoryDevice Memory;
         public Dictionary<OpCodes, IInstruction> Instructions;
         public int StackFrameSize = 0;
 
-        public CPU(IMemory memory, byte[] program)
+        public CPU(IDevice memory, byte[] program)
         {
             this.Registers = memory.Create(Enum.GetNames(typeof(Registers)).Length * 2);
-            Memory = memory.Create(256 * 256);
+            Memory = (MemoryDevice)memory.Create(256 * 256);
 
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
@@ -58,6 +60,9 @@ namespace BitVm.Lib
             Instructions.Add(OpCodes.CAL_LIT, new CallLitInstruction());
             Instructions.Add(OpCodes.CAL_REG, new CallRegInstruction());
             Instructions.Add(OpCodes.RET, new RetInstruction());
+
+            //other instructions
+            Instructions.Add(OpCodes.HLT, new HltInstruction());
         }
 
         private void initRegisterMap()
@@ -73,7 +78,7 @@ namespace BitVm.Lib
 
         public ushort GetRegister(Registers reg)
         {
-            return BitConverter.ToUInt16(Registers, RegisterMap[reg]);
+            return Registers.GetUInt16((ushort)RegisterMap[reg]);
         }
 
         public ushort GetRegister(byte reg)
@@ -83,9 +88,7 @@ namespace BitVm.Lib
 
         public void SetRegister(Registers reg, ushort value)
         {
-            var tmp = BitConverter.GetBytes(value);
-
-            Array.Copy(tmp, 0, Registers, RegisterMap[reg], sizeof(ushort));
+            Registers.SetUInt16((ushort)RegisterMap[reg], value);
         }
 
         public void SetRegister(byte reg, ushort value)
@@ -115,21 +118,30 @@ namespace BitVm.Lib
             return BitConverter.ToUInt16(new byte[] { first, second }, 0);
         }
 
-        public void Step()
+        public bool Step()
         {
             var instr = Fetch();
-            Step((OpCodes)instr);
+            return Step((OpCodes)instr);
         }
 
-        public void Step(OpCodes instruction)
+        public bool Step(OpCodes instruction)
         {
             if (Instructions.ContainsKey(instruction))
             {
-                Instructions[instruction].Invoke(this);
+                return Instructions[instruction].Invoke(this);
             }
             else
             {
                 throw new Exception("unknown opcode");
+            }
+        }
+
+        public void Run()
+        {
+            var halt = Step();
+            if (!halt)
+            {
+                Run();
             }
         }
 
@@ -139,16 +151,6 @@ namespace BitVm.Lib
             {
                 Console.WriteLine(reg.Key + ": " + GetRegister(reg.Key));
             }
-        }
-
-        public void ViewMemoryAt(int address)
-        {
-            // 0x0f01: 0x04 0x05 0xA3 0xFE 0x13 0x0D 0x44 0x0F
-            var bytes = Memory.Skip(address).Take(8);
-            var hexBytes = bytes.Select(_ => "0x" + _.ToString("x"));
-            var joined = string.Join(" ", hexBytes);
-
-            Console.WriteLine(address.ToString("x") + ": " + joined);
         }
 
         public void Push(ushort value)

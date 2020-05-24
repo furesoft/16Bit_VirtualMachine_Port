@@ -4,7 +4,7 @@
     {
         public OpCodes Instruction => OpCodes.MOV_REG_REG;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var fromReg = cpu.Fetch();
             var toReg = cpu.Fetch();
@@ -12,6 +12,8 @@
             var fromValue = cpu.GetRegister(fromReg);
 
             cpu.SetRegister(toReg, fromValue);
+
+            return false;
         }
     }
 }

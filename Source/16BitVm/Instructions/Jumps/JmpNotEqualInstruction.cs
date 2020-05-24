@@ -5,7 +5,7 @@ namespace BitVm.Lib.Instructions.Jumps
     {
         public OpCodes Instruction => OpCodes.JMP_NOT_EQ;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var value = cpu.Fetch16();
             var address = cpu.Fetch16();
@@ -14,6 +14,8 @@ namespace BitVm.Lib.Instructions.Jumps
             {
                 cpu.SetRegister(Registers.IP, address);
             }
+
+            return false;
         }
     }
 }

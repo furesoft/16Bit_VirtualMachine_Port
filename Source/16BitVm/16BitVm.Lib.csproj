@@ -12,7 +12,6 @@
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="MemoryImplementations\" />
     <Folder Include="Instructions\" />
     <Folder Include="Instructions\Move\" />
     <Folder Include="Instructions\Arithmetik\" />
@@ -20,6 +19,7 @@
     <Folder Include="Instructions\Jumps\" />
     <Folder Include="Instructions\Stack\" />
     <Folder Include="Instructions\Calls\" />
+    <Folder Include="Devices\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

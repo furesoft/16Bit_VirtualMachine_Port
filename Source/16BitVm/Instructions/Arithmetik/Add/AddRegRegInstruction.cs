@@ -5,7 +5,7 @@ namespace BitVm.Lib.Instructions.Arithmetik.Add
     {
         public OpCodes Instruction => OpCodes.ADD_REG_REG;
 
-        public void Invoke(CPU cpu)
+        public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();
             var r2 = cpu.FetchRegister();
@@ -13,6 +13,8 @@ namespace BitVm.Lib.Instructions.Arithmetik.Add
             var registerValue2 = cpu.GetRegister(r2);
 
             cpu.SetRegister(Registers.Acc, (ushort)(registerValue1 + registerValue2));
+
+            return false;
         }
     }
 }

@@ -4,6 +4,6 @@ namespace BitVm.Lib
     public interface IInstruction
     {
         OpCodes Instruction { get; }
-        void Invoke(CPU cpu);
+        bool Invoke(CPU cpu);
     }
 }
