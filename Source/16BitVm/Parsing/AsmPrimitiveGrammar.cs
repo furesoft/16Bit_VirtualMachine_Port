@@ -8,8 +8,8 @@ namespace BitVm.Lib.Parsing
     {
         public Parser<string> UpperOrLowerStr(string c)
         {
-            var upper = Parse.String(c.ToUpper()).Token().Text();
-            var lower = Parse.String(c.ToLower()).Token().Text();
+            var upper = Parse.String(c.ToUpper()).Text();
+            var lower = Parse.String(c.ToLower()).Text();
 
             return Parse.Or(upper, lower);
         }
@@ -38,7 +38,7 @@ namespace BitVm.Lib.Parsing
 
         public Parser<string> HexDigit()
         {
-            return Parse.Regex("/^[0-9A-Fa-f]/");
+            return Parse.Regex("[0-9A-Fa-f]");
         }
 
         public Parser<HexLiteralNode> HexLiteral()
@@ -48,6 +48,7 @@ namespace BitVm.Lib.Parsing
             select new HexLiteralNode(string.Join("", v)));
         }
 
+        //"mov $42, r4";
         public Parser<InstructionNode> movLitToReg()
         {
             return (from mnemonic in UpperOrLowerStr("mov")

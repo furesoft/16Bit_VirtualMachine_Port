@@ -31,7 +31,9 @@ namespace VmRunner
 
             var asm = "mov $42, r4";
             var p = new AsmPrimitiveGrammar();
-            var result = p.movLitToReg().Parse(asm);
+            var test = p.Register().Parse("r1");
+
+            var result = p.movLitToReg().Parse(asm); //throws error
         }
     }
 }
