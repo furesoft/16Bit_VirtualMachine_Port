@@ -41,14 +41,13 @@ namespace BitVm.Lib.Parsing
             return Parse.Regex("[0-9A-Fa-f]");
         }
 
-        public Parser<HexLiteralNode> HexLiteral()
+        public Parser<ISyntaxNode> HexLiteral()
         {
             return (from i in Parse.Char('$')
             from v in Parse.Many(HexDigit())
             select new HexLiteralNode(string.Join("", v)));
         }
 
-        //"mov $42, r4";
         public Parser<InstructionNode> movLitToReg()
         {
             return (from mnemonic in UpperOrLowerStr("mov")
@@ -60,6 +59,55 @@ namespace BitVm.Lib.Parsing
             from reg in Register()
             from os in Parse.WhiteSpace.Optional()
             select new InstructionNode("mov_lit_reg", lit, reg));
+        }
+
+        public Parser<IdNode> ValidIdentifier()
+        {
+            return from id in Parse.Identifier(Parse.Letter, Parse.LetterOrDigit)
+            select new IdNode(id);
+        }
+
+        public Parser<ISyntaxNode> Variable()
+        {
+            return from c in Parse.Char('!')
+                   from name in ValidIdentifier()
+                   select name;
+        }
+
+        public Parser<Operators> Operator()
+        {
+            var plus = Parse.Char('+').Return(Operators.Plus);
+            var minus = Parse.Char('-').Return(Operators.Minus);
+            var mul = Parse.Char('*').Return(Operators.Multiply);
+
+            return plus.Or(minus).Or(mul);
+        }
+
+        
+
+        public Parser<ISyntaxNode> SquareBracketExpression()
+        {
+            return from ob in Parse.Char('[')
+            from os in Parse.WhiteSpace.Optional()
+            from inner in InnerExpression()
+                  from oss in Parse.WhiteSpace.Optional()
+                  from cb in Parse.Char(']')
+            select new SquareBracketExpressionNode(inner);
+        }
+
+        private Parser<ISyntaxNode> InnerExpression()
+        {
+            return Variable().Or(HexLiteral()).Or(GroupedExpression());
+        }
+
+        public Parser<ISyntaxNode> GroupedExpression()
+        {
+            return from l in Parse.Char('(')
+                   from os in Parse.WhiteSpace.Optional()
+                   from expr in Parse.Ref(() => InnerExpression())
+                   from oss in Parse.WhiteSpace.Optional()
+                   from r in Parse.Char(')')
+                   select expr;
         }
     }
 }
