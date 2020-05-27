@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BitVm.Lib.Parsing.AST;
 using Sprache;
 
@@ -10,13 +11,15 @@ namespace BitVm.Lib.Parsing
         {
             const string mnemonic = "mov";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic)).
-                Or(AsmInstructionBaseGrammar.MemReg(mnemonic)).
-                Or(AsmInstructionBaseGrammar.RegMem(mnemonic)).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic)).
-                Or(AsmInstructionBaseGrammar.RegPtrReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitOffReg(mnemonic)));
+            return AsmPrimitiveGrammar.Choice(
+                AsmInstructionBaseGrammar.RegReg(mnemonic),
+                AsmInstructionBaseGrammar.LitReg(mnemonic),
+                AsmInstructionBaseGrammar.MemReg(mnemonic),
+                AsmInstructionBaseGrammar.RegMem(mnemonic),
+                AsmInstructionBaseGrammar.LitMem(mnemonic),
+                AsmInstructionBaseGrammar.RegPtrReg(mnemonic),
+                AsmInstructionBaseGrammar.LitOffReg(mnemonic)
+            );
         }
 
         private static Parser<ISyntaxNode> Op(string mnemonic)
@@ -62,7 +65,7 @@ namespace BitVm.Lib.Parsing
                 Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> and()
+        public static Parser<ISyntaxNode> And()
         {
             const string mnemonic = "and";
 
@@ -133,7 +136,7 @@ namespace BitVm.Lib.Parsing
                 Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Lle()
+        public static Parser<ISyntaxNode> Jle()
         {
             const string mnemonic = "jle";
 
@@ -149,7 +152,7 @@ namespace BitVm.Lib.Parsing
                 Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Push()
+        public static Parser<ISyntaxNode> Psh()
         {
             const string mnemonic = "psh";
 
@@ -182,33 +185,33 @@ namespace BitVm.Lib.Parsing
 
         public static Parser<ISyntaxNode> Instruction()
         {
-            /*
-             * module.exports = A.choice([
-  mov,
-  add,
-  sub,
-  inc,
-  dec,
-  mul,
-  lsf,
-  rsf,
-  and,
-  or,
-  xor,
-  not,
-  jne,
-  jeq,
-  jlt,
-  jgt,
-  jle,
-  jge,
-  psh,
-  pop,
-  cal,
-  ret,
-  hlt,
-]);
-*/
+            return AsmPrimitiveGrammar.Choice(
+                  Mov(),
+                  Add(),
+                  sub(),
+                  Inc(),
+                  Dec(),
+                  Mul(),
+                  Lsf(),
+                  Rsf(),
+                  And(),
+                  Or(),
+                  XOr(),
+                  Not(),
+                  Jne(),
+                  Jeq(),
+                  Jlt(),
+                  Jgt(),
+                  Jle(),
+                  Jge(),
+                  Psh(),
+                  Pop(),
+                  Cal(),
+                  Ret(),
+                  Hlt()
+             );
         }
+
+
     }
 }

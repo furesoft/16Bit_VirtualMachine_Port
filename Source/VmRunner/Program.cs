@@ -28,12 +28,10 @@ namespace VmRunner
 
             cpu.DumpRegisters();
             Console.WriteLine();
+            
 
-            var asm = "mov $42, r4";
-            var value = InstructionsGrammar.Mov().Parse(asm);
-
-
-
+            var asm = "add $42, r4";
+            var value = InstructionsGrammar.Instruction().Parse(asm);
         }
     }
 }
