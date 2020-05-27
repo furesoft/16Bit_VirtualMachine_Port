@@ -13,6 +13,15 @@ namespace BitVm.Lib.Parsing
                    select c;
         }
 
+        public static Parser<ISyntaxNode> Address()
+        {
+            return Parse.Return(new LiteralNode("address_seperator"));
+        }
+
+        private static Parser<ISyntaxNode> RegPtrinternal() {
+            return Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression());
+        }
+
         private static Parser<ISyntaxNode[]> DoubleArg(Parser<ISyntaxNode> p1, Parser<ISyntaxNode> p2)
         {
             return from arg1 in p1
@@ -42,7 +51,7 @@ namespace BitVm.Lib.Parsing
         {
             return from mnem in AsmPrimitiveGrammar.UpperOrLowerStr(mnemonic)
                    from ws in Parse.WhiteSpace
-                   from args in DoubleArg(AsmPrimitiveGrammar.Register(), Address.Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()))
+                   from args in DoubleArg(AsmPrimitiveGrammar.Register(), Address().Or(RegPtrinternal()))
                    select new InstructionNode(mnem, mnemonic + "_reg_mem", args);
         }
 
@@ -50,7 +59,7 @@ namespace BitVm.Lib.Parsing
         {
             return from mnem in AsmPrimitiveGrammar.UpperOrLowerStr(mnemonic)
                    from ws in Parse.WhiteSpace
-                   from args in DoubleArg(Address.Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()), AsmPrimitiveGrammar.Register())
+                   from args in DoubleArg(Address().Or(RegPtrinternal()), AsmPrimitiveGrammar.Register())
                    select new InstructionNode(mnem, mnemonic + "_mem_reg", args);
         }
 
@@ -58,7 +67,10 @@ namespace BitVm.Lib.Parsing
         {
             return from mnem in AsmPrimitiveGrammar.UpperOrLowerStr(mnemonic)
                    from ws in Parse.WhiteSpace
-                   from args in DoubleArg(AsmPrimitiveGrammar.HexLiteral().Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()), Address.Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()))
+                   from args in DoubleArg(
+                       AsmPrimitiveGrammar.HexLiteral().Or(
+                           RegPtrinternal()),
+                           Address().Or(RegPtrinternal()))
                    select new InstructionNode(mnem, mnemonic + "_lit_mem", args);
         }
 
@@ -74,7 +86,7 @@ namespace BitVm.Lib.Parsing
         {
             return from mnem in AsmPrimitiveGrammar.UpperOrLowerStr(mnemonic)
                    from ws in Parse.WhiteSpace
-                   from lit in AsmPrimitiveGrammar.HexLiteral().Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()))
+                   from lit in AsmPrimitiveGrammar.HexLiteral().Or(RegPtrinternal())
                    from sep in InstructionSeperator()
                    from r1 in Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.Register())
                    from sep2 in InstructionSeperator()
@@ -103,7 +115,7 @@ namespace BitVm.Lib.Parsing
         {
             return from mnem in AsmPrimitiveGrammar.UpperOrLowerStr(mnemonic)
                    from ws in Parse.WhiteSpace
-                   from lit in AsmPrimitiveGrammar.HexLiteral().Or(Parse.Char('&').Then((arg) => AsmPrimitiveGrammar.SquareBracketExpression()))
+                   from lit in AsmPrimitiveGrammar.HexLiteral().Or(RegPtrinternal())
                    from os in Parse.WhiteSpace.Optional()
                    select new InstructionNode(mnem, mnem + "_lit", lit);
         }
