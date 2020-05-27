@@ -30,7 +30,7 @@ namespace VmRunner
             Console.WriteLine();
 
             var asm = "mov $42, r4";
-            var value = AsmInstructionGrammar.LitReg("mov", "mov_lit_reg").Parse(asm);
+            var value = InstructionsGrammar.Mov().Parse(asm);
 
 
 
