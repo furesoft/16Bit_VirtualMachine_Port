@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BitVm.Lib.Parsing.AST;
 using Sprache;
 
@@ -12,6 +13,17 @@ namespace BitVm.Lib.Parsing
             var lower = Parse.String(c.ToLower()).Text();
 
             return Parse.Or(upper, lower);
+        }
+
+        public static Parser<T> Choice<T>(params Parser<T>[] list)
+        {
+            Parser<T> old = list.First();
+            foreach (var o in list)
+            {
+                old = old.Or(o);
+            }
+
+            return old;
         }
 
         public static Parser<LiteralNode> Register()
