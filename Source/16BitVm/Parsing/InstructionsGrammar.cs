@@ -179,5 +179,36 @@ namespace BitVm.Lib.Parsing
         {
             return AsmInstructionBaseGrammar.NoArg("hlt");
         }
+
+        public static Parser<ISyntaxNode> Instruction()
+        {
+            /*
+             * module.exports = A.choice([
+  mov,
+  add,
+  sub,
+  inc,
+  dec,
+  mul,
+  lsf,
+  rsf,
+  and,
+  or,
+  xor,
+  not,
+  jne,
+  jeq,
+  jlt,
+  jgt,
+  jle,
+  jge,
+  psh,
+  pop,
+  cal,
+  ret,
+  hlt,
+]);
+*/
+        }
     }
 }
