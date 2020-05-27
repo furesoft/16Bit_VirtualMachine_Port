@@ -30,10 +30,8 @@ namespace VmRunner
             Console.WriteLine();
 
             var asm = "mov $42, r4";
-            var p = new AsmPrimitiveGrammar();
-            var test = p.SquareBracketExpression().Parse("[($2a)]");
+            var value = AsmInstructionGrammar.LitReg("mov", "mov_lit_reg").Parse(asm);
 
-            var result = p.movLitToReg().Parse(asm); //throws error
 
 
         }

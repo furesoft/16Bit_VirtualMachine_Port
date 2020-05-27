@@ -4,9 +4,9 @@ using Sprache;
 
 namespace BitVm.Lib.Parsing
 {
-    public class AsmPrimitiveGrammar
+    public static class AsmPrimitiveGrammar
     {
-        public Parser<string> UpperOrLowerStr(string c)
+        public static Parser<string> UpperOrLowerStr(string c)
         {
             var upper = Parse.String(c.ToUpper()).Text();
             var lower = Parse.String(c.ToLower()).Text();
@@ -14,7 +14,7 @@ namespace BitVm.Lib.Parsing
             return Parse.Or(upper, lower);
         }
 
-        public Parser<LiteralNode> Register()
+        public static Parser<LiteralNode> Register()
         {
             var r1 = UpperOrLowerStr("r1").Return(Registers.R1);
             var r2 = UpperOrLowerStr("r2").Return(Registers.R2);
@@ -36,45 +36,32 @@ namespace BitVm.Lib.Parsing
                     select new LiteralNode(v));
         }
 
-        public Parser<string> HexDigit()
+        public static Parser<string> HexDigit()
         {
             return Parse.Regex("[0-9A-Fa-f]");
         }
 
-        public Parser<ISyntaxNode> HexLiteral()
+        public static Parser<ISyntaxNode> HexLiteral()
         {
             return (from i in Parse.Char('$')
             from v in Parse.Many(HexDigit())
             select new HexLiteralNode(string.Join("", v)));
         }
 
-        public Parser<InstructionNode> movLitToReg()
-        {
-            return (from mnemonic in UpperOrLowerStr("mov")
-            from s in Parse.WhiteSpace
-            from lit in HexLiteral()
-            from osl in Parse.WhiteSpace.Optional()
-            from c in Parse.Char(',')
-            from osc in Parse.WhiteSpace.Optional()
-            from reg in Register()
-            from os in Parse.WhiteSpace.Optional()
-            select new InstructionNode("mov_lit_reg", lit, reg));
-        }
-
-        public Parser<IdNode> ValidIdentifier()
+        public static Parser<IdNode> ValidIdentifier()
         {
             return from id in Parse.Identifier(Parse.Letter, Parse.LetterOrDigit)
             select new IdNode(id);
         }
 
-        public Parser<ISyntaxNode> Variable()
+        public static Parser<ISyntaxNode> Variable()
         {
             return from c in Parse.Char('!')
                    from name in ValidIdentifier()
                    select name;
         }
 
-        public Parser<Operators> Operator()
+        public static Parser<Operators> Operator()
         {
             var plus = Parse.Char('+').Return(Operators.Plus);
             var minus = Parse.Char('-').Return(Operators.Minus);
@@ -85,7 +72,7 @@ namespace BitVm.Lib.Parsing
 
         
 
-        public Parser<ISyntaxNode> SquareBracketExpression()
+        public static Parser<ISyntaxNode> SquareBracketExpression()
         {
             return from ob in Parse.Char('[')
             from os in Parse.WhiteSpace.Optional()
@@ -95,12 +82,12 @@ namespace BitVm.Lib.Parsing
             select new SquareBracketExpressionNode(inner);
         }
 
-        private Parser<ISyntaxNode> InnerExpression()
+        private static Parser<ISyntaxNode> InnerExpression()
         {
             return Variable().Or(HexLiteral()).Or(GroupedExpression());
         }
 
-        public Parser<ISyntaxNode> GroupedExpression()
+        public static Parser<ISyntaxNode> GroupedExpression()
         {
             return from l in Parse.Char('(')
                    from os in Parse.WhiteSpace.Optional()
