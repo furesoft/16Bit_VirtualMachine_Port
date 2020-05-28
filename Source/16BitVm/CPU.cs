@@ -2,23 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BitVm.Lib.Devices;
-using BitVm.Lib.Instructions;
-using BitVm.Lib.Instructions.Arithmetik.Add;
-using BitVm.Lib.Instructions.Arithmetik.Mul;
-using BitVm.Lib.Instructions.Arithmetik.Sub;
-using BitVm.Lib.Instructions.Calls;
-using BitVm.Lib.Instructions.Jumps;
-using BitVm.Lib.Instructions.Logical;
-using BitVm.Lib.Instructions.Move;
-using BitVm.Lib.Instructions.Shifting;
-using BitVm.Lib.Instructions.Stack;
 
 namespace BitVm.Lib
 {
     public class CPU
     {
-        public byte[] Registers;
+        //public byte[] Registers;
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
         public Dictionary<OpCodes, IInstruction> Instructions;
@@ -26,7 +15,7 @@ namespace BitVm.Lib
 
         public CPU(byte[] program)
         {
-            this.Registers = new byte[Enum.GetNames(typeof(Registers)).Length * 2];
+            //this.Registers = new byte[Enum.GetNames(typeof(Registers)).Length * 2];
 
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
@@ -65,7 +54,7 @@ namespace BitVm.Lib
 
         public ushort GetRegister(Registers reg)
         {
-            return Registers.GetUInt16((ushort)RegisterMap[reg]);
+            return MemoryMapper.GetUInt16((ushort)RegisterMap[reg]);
         }
 
         public ushort GetRegister(byte reg)
@@ -75,7 +64,7 @@ namespace BitVm.Lib
 
         public void SetRegister(Registers reg, ushort value)
         {
-            Registers.SetUInt16((ushort)RegisterMap[reg], value);
+            MemoryMapper.SetUInt16((ushort)RegisterMap[reg], value);
         }
 
         public void SetRegister(byte reg, ushort value)
