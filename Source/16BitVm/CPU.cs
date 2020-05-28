@@ -7,7 +7,6 @@ namespace BitVm.Lib
 {
     public class CPU
     {
-        //public byte[] Registers;
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
         public Dictionary<OpCodes, IInstruction> Instructions;
@@ -15,16 +14,14 @@ namespace BitVm.Lib
 
         public CPU(byte[] program)
         {
-            //this.Registers = new byte[Enum.GetNames(typeof(Registers)).Length * 2];
-
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
 
             initRegisterMap();
-            SetRegister(Lib.Registers.SP, 0xffff - 1);
-            SetRegister(Lib.Registers.FP, 0xffff - 1);
+            SetRegister(Registers.SP, 0xffff - 1);
+            SetRegister(Registers.FP, 0xffff - 1);
 
-            this.Program = program;
+            Program = program;
 
             initInstructions();
         }
@@ -74,9 +71,9 @@ namespace BitVm.Lib
 
         public byte Fetch()
         {
-            var nextInstuctionAddress = GetRegister(Lib.Registers.IP);
-            var instruction = this.Program[nextInstuctionAddress];
-            SetRegister(Lib.Registers.IP, (ushort)(nextInstuctionAddress + 1));
+            var nextInstuctionAddress = GetRegister(Registers.IP);
+            var instruction = Program[nextInstuctionAddress];
+            SetRegister(Registers.IP, (ushort)(nextInstuctionAddress + 1));
 
             return instruction;
         }
@@ -131,16 +128,16 @@ namespace BitVm.Lib
 
         public void Push(ushort value)
         {
-            var spAddress = GetRegister(Lib.Registers.SP);
+            var spAddress = GetRegister(Registers.SP);
             MemoryMapper.SetUInt16(spAddress, value);
-            SetRegister(Lib.Registers.SP, (ushort)(spAddress - 2));
+            SetRegister(Registers.SP, (ushort)(spAddress - 2));
             StackFrameSize += 2;
         }
 
         public ushort Pop()
         {
-            var nextSpAddress = GetRegister(Lib.Registers.SP) + 2;
-            SetRegister(Lib.Registers.SP, (ushort)nextSpAddress);
+            var nextSpAddress = GetRegister(Registers.SP) + 2;
+            SetRegister(Registers.SP, (ushort)nextSpAddress);
             StackFrameSize -= 2;
 
             return MemoryMapper.GetUInt16((ushort)nextSpAddress);
@@ -148,38 +145,38 @@ namespace BitVm.Lib
 
         public void PushState()
         {
-            Push(GetRegister(Lib.Registers.R1));
-            Push(GetRegister(Lib.Registers.R2));
-            Push(GetRegister(Lib.Registers.R3));
-            Push(GetRegister(Lib.Registers.R4));
-            Push(GetRegister(Lib.Registers.R5));
-            Push(GetRegister(Lib.Registers.R6));
-            Push(GetRegister(Lib.Registers.R7));
-            Push(GetRegister(Lib.Registers.R8));
-            Push(GetRegister(Lib.Registers.IP));
+            Push(GetRegister(Registers.R1));
+            Push(GetRegister(Registers.R2));
+            Push(GetRegister(Registers.R3));
+            Push(GetRegister(Registers.R4));
+            Push(GetRegister(Registers.R5));
+            Push(GetRegister(Registers.R6));
+            Push(GetRegister(Registers.R7));
+            Push(GetRegister(Registers.R8));
+            Push(GetRegister(Registers.IP));
             Push((ushort)(StackFrameSize + 2));
 
-            SetRegister(Lib.Registers.FP, GetRegister(Lib.Registers.SP));
+            SetRegister(Registers.FP, GetRegister(Registers.SP));
             StackFrameSize = 0;
         }
 
         public void PopState()
         {
-            var framePointerAddress = GetRegister(Lib.Registers.FP);
-            this.SetRegister(Lib.Registers.SP, framePointerAddress);
+            var framePointerAddress = GetRegister(Registers.FP);
+            SetRegister(Registers.SP, framePointerAddress);
 
             StackFrameSize = Pop();
             var stackFrameSize = StackFrameSize;
 
-            SetRegister(Lib.Registers.IP, Pop());
-            SetRegister(Lib.Registers.R8, Pop());
-            SetRegister(Lib.Registers.R7, Pop());
-            SetRegister(Lib.Registers.R6, Pop());
-            SetRegister(Lib.Registers.R5, Pop());
-            SetRegister(Lib.Registers.R4, Pop());
-            SetRegister(Lib.Registers.R3, Pop());
-            SetRegister(Lib.Registers.R2, Pop());
-            SetRegister(Lib.Registers.R1, Pop());
+            SetRegister(Registers.IP, Pop());
+            SetRegister(Registers.R8, Pop());
+            SetRegister(Registers.R7, Pop());
+            SetRegister(Registers.R6, Pop());
+            SetRegister(Registers.R5, Pop());
+            SetRegister(Registers.R4, Pop());
+            SetRegister(Registers.R3, Pop());
+            SetRegister(Registers.R2, Pop());
+            SetRegister(Registers.R1, Pop());
 
             var nArgs = Pop();
             for (var i = 0; i < nArgs; i++)
@@ -187,7 +184,7 @@ namespace BitVm.Lib
                 Pop();
             }
 
-            SetRegister(Lib.Registers.FP, (ushort)(framePointerAddress + stackFrameSize));
+            SetRegister(Registers.FP, (ushort)(framePointerAddress + stackFrameSize));
         }
     }
 }
