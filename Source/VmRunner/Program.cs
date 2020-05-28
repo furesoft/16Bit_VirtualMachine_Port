@@ -30,8 +30,8 @@ namespace VmRunner
             Console.WriteLine();
             
 
-            var asm = "add $42, r4";
-            var value = InstructionsGrammar.Instruction().Parse(asm);
+            var asm = "mov $42, r4";
+            var value = InstructionsGrammar.Parse(asm);
         }
     }
 }

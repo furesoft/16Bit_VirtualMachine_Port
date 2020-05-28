@@ -1,191 +1,189 @@
-﻿using System;
-using System.Linq;
-using BitVm.Lib.Parsing.AST;
+﻿using BitVm.Lib.Parsing.AST;
 using Sprache;
 
 namespace BitVm.Lib.Parsing
 {
-    public static class InstructionsGrammar
+    public class InstructionsGrammar : AsmInstructionBaseGrammar
     {
-        public static Parser<ISyntaxNode> Mov()
+        public virtual Parser<ISyntaxNode> Mov()
         {
             const string mnemonic = "mov";
 
-            return AsmPrimitiveGrammar.Choice(
-                AsmInstructionBaseGrammar.RegReg(mnemonic),
-                AsmInstructionBaseGrammar.LitReg(mnemonic),
-                AsmInstructionBaseGrammar.MemReg(mnemonic),
-                AsmInstructionBaseGrammar.RegMem(mnemonic),
-                AsmInstructionBaseGrammar.LitMem(mnemonic),
-                AsmInstructionBaseGrammar.RegPtrReg(mnemonic),
-                AsmInstructionBaseGrammar.LitOffReg(mnemonic)
+            return Choice(
+                RegReg(mnemonic),
+                LitReg(mnemonic),
+                MemReg(mnemonic),
+                RegMem(mnemonic),
+                LitMem(mnemonic),
+                RegPtrReg(mnemonic),
+                LitOffReg(mnemonic)
             );
         }
 
-        private static Parser<ISyntaxNode> Op(string mnemonic)
+        protected virtual Parser<ISyntaxNode> Op(string mnemonic)
         {
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Add()
+        public virtual Parser<ISyntaxNode> Add()
         {
             const string mnemonic = "add";
 
             return Op(mnemonic);
         }
 
-        public static Parser<ISyntaxNode> sub()
+        public virtual Parser<ISyntaxNode> sub()
         {
             const string mnemonic = "sub";
 
             return Op(mnemonic);
         }
 
-        public static Parser<ISyntaxNode> Mul()
+        public virtual Parser<ISyntaxNode> Mul()
         {
             const string mnemonic = "mul";
 
             return Op(mnemonic);
         }
 
-        public static Parser<ISyntaxNode> Lsf()
+        public virtual Parser<ISyntaxNode> Lsf()
         {
             const string mnemonic = "lsf";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Rsf()
+        public virtual Parser<ISyntaxNode> Rsf()
         {
             const string mnemonic = "rsf";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> And()
+        public virtual Parser<ISyntaxNode> And()
         {
             const string mnemonic = "and";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Or()
+        public virtual Parser<ISyntaxNode> Or()
         {
             const string mnemonic = "or";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> XOr()
+        public virtual Parser<ISyntaxNode> XOr()
         {
             const string mnemonic = "xor";
 
-            return AsmInstructionBaseGrammar.RegReg(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitReg(mnemonic));
+            return RegReg(mnemonic).
+                Or(LitReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Inc()
+        public virtual Parser<ISyntaxNode> Inc()
         {
-            return AsmInstructionBaseGrammar.SingleReg("inc");
+            return SingleReg("inc");
         }
 
-        public static Parser<ISyntaxNode> Dec()
+        public virtual Parser<ISyntaxNode> Dec()
         {
-            return AsmInstructionBaseGrammar.SingleReg("dec");
+            return SingleReg("dec");
         }
 
-        public static Parser<ISyntaxNode> Not()
+        public virtual Parser<ISyntaxNode> Not()
         {
-            return AsmInstructionBaseGrammar.SingleReg("not");
+            return SingleReg("not");
         }
 
-        public static Parser<ISyntaxNode> Jeq()
+        public virtual Parser<ISyntaxNode> Jeq()
         {
             const string mnemonic = "jeq";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Jne()
+        public virtual Parser<ISyntaxNode> Jne()
         {
             const string mnemonic = "jne";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Jlt()
+        public virtual Parser<ISyntaxNode> Jlt()
         {
             const string mnemonic = "jlt";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Jgt()
+        public virtual Parser<ISyntaxNode> Jgt()
         {
             const string mnemonic = "jgt";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Jle()
+        public virtual Parser<ISyntaxNode> Jle()
         {
             const string mnemonic = "jle";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Jge()
+        public virtual Parser<ISyntaxNode> Jge()
         {
             const string mnemonic = "jge";
 
-            return AsmInstructionBaseGrammar.RegMem(mnemonic).
-                Or(AsmInstructionBaseGrammar.LitMem(mnemonic));
+            return RegMem(mnemonic).
+                Or(LitMem(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Psh()
+        public virtual Parser<ISyntaxNode> Psh()
         {
             const string mnemonic = "psh";
 
-            return AsmInstructionBaseGrammar.SingleLit(mnemonic).
-                Or(AsmInstructionBaseGrammar.SingleReg(mnemonic));
+            return SingleLit(mnemonic).
+                Or(SingleReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Pop()
+        public virtual Parser<ISyntaxNode> Pop()
         {
-            return AsmInstructionBaseGrammar.SingleReg("pop");
+            return SingleReg("pop");
         }
 
-        public static Parser<ISyntaxNode> Cal()
+        public virtual Parser<ISyntaxNode> Cal()
         {
             const string mnemonic = "cal";
 
-            return AsmInstructionBaseGrammar.SingleLit(mnemonic).
-                Or(AsmInstructionBaseGrammar.SingleReg(mnemonic));
+            return SingleLit(mnemonic).
+                Or(SingleReg(mnemonic));
         }
 
-        public static Parser<ISyntaxNode> Ret()
+        public virtual Parser<ISyntaxNode> Ret()
         {
-            return AsmInstructionBaseGrammar.NoArg("ret");
+            return NoArg("ret");
         }
 
-        public static Parser<ISyntaxNode> Hlt()
+        public virtual Parser<ISyntaxNode> Hlt()
         {
-            return AsmInstructionBaseGrammar.NoArg("hlt");
+            return NoArg("hlt");
         }
 
-        public static Parser<ISyntaxNode> Instruction()
+        public virtual Parser<ISyntaxNode> Instruction()
         {
-            return AsmPrimitiveGrammar.Choice(
+            return Choice(
                   Mov(),
                   Add(),
                   sub(),
@@ -212,6 +210,9 @@ namespace BitVm.Lib.Parsing
              );
         }
 
-
+        public static ISyntaxNode Parse(string source)
+        {
+            return new InstructionsGrammar().Instruction().Parse(source);
+        }
     }
 }
