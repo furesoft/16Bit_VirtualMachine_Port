@@ -13,6 +13,7 @@ namespace VmRunner
             var program = new byte[] {
                 (byte)OpCodes.MOV_LIT_REG, 65, 0xFF, (byte)Registers.R5, // write A
                 (byte)OpCodes.MOV_REG_MEM, (byte)Registers.R5, 0xff,0,
+                (byte)OpCodes.INC_REG, (byte)Registers.R5,
                 (byte)OpCodes.MOV_LIT_REG, (byte)'\n', 0xFF, (byte)Registers.R5, //write new line
                 (byte)OpCodes.MOV_REG_MEM, (byte)Registers.R5, 0xff,0,
                 (byte)OpCodes.HLT
