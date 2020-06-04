@@ -9,5 +9,10 @@ namespace BitVm.Lib.Parsing.AST.Literals
         {
             Address = addr;
         }
+
+        public void Accept(SyntaxNodeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

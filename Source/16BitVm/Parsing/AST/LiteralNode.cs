@@ -8,5 +8,10 @@
         }
 
         public object Value { get; set; }
+
+        public void Accept(SyntaxNodeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

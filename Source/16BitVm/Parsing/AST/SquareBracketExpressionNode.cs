@@ -9,5 +9,10 @@ namespace BitVm.Lib.Parsing.AST
         }
 
         public ISyntaxNode Inner { get; set; }
+
+        public void Accept(SyntaxNodeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }

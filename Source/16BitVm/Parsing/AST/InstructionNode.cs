@@ -14,5 +14,10 @@ namespace BitVm.Lib.Parsing.AST
         public string Mnemonic { get; set; }
 
         public ISyntaxNode[] Args { get; set; }
+
+        public void Accept(SyntaxNodeVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
     }
 }
