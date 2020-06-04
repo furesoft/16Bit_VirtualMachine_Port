@@ -69,7 +69,6 @@ namespace BitVm.Lib.Parsing
                                                       from name in ValidIdentifier
                                                       select name;
 
-
         public virtual Parser<Operators> Operator
         {
             get
