@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using BitVm.Lib.Parsing.AST;
 using Sprache;
