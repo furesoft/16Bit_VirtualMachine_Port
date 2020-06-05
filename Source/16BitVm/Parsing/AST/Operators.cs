@@ -6,5 +6,6 @@ namespace BitVm.Lib.Parsing.AST
         Plus,
         Minus,
         Multiply,
+        Divide,
     }
 }
