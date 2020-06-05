@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using BitVm.Lib.Parsing.AST;
 using Sprache;
 
@@ -46,17 +46,22 @@ namespace BitVm.Lib.Parsing
                 var value = r1.Or(r2).Or(r3).Or(r4).Or(r5).Or(r6).Or(r7).Or(r8).Or(sp).Or(fp).Or(ip).Or(acc);
 
                 return (from v in value
-                        select new LiteralNode(v));
+                        select new RegisterLiteralNode(v));
             }
         }
 
         public virtual Parser<string> HexDigit => Parse.Regex("[0-9A-Fa-f]");
+        public virtual Parser<string> Digit => Parse.Regex("[0-9]");
 
 
         public virtual Parser<ISyntaxNode> HexLiteral =>
         from i in Parse.Char('$')
         from v in Parse.Many(HexDigit)
         select new HexLiteralNode(string.Join("", v));
+
+        public virtual Parser<ISyntaxNode> Number =>
+        from v in Parse.Many(Digit)
+        select new LiteralNode(int.Parse(string.Join("", v)));
 
 
         public virtual Parser<IdNode> ValidIdentifier =>
@@ -65,40 +70,41 @@ namespace BitVm.Lib.Parsing
 
 
         public virtual Parser<ISyntaxNode> Variable => from c in Parse.Char('!')
-                                                      from name in ValidIdentifier
-                                                      select name;
+                                                       from name in ValidIdentifier
+                                                       select name;                                              
 
-        public virtual Parser<Operators> Operator
-        {
-            get
-            {
-                var plus = Parse.Char('+').Return(Operators.Plus);
-                var minus = Parse.Char('-').Return(Operators.Minus);
-                var mul = Parse.Char('*').Return(Operators.Multiply);
-
-                return plus.Or(minus).Or(mul);
-            }
-        }
-        
 
         public virtual Parser<ISyntaxNode> SquareBracketExpression =>
              from ob in Parse.Char('[')
-            from os in Parse.WhiteSpace.Optional()
-            from inner in InnerExpression
-                  from oss in Parse.WhiteSpace.Optional()
-                  from cb in Parse.Char(']')
-            select new SquareBracketExpressionNode(inner);
+             from os in Parse.WhiteSpace.Optional()
+             from inner in InnerExpression
+             from oss in Parse.WhiteSpace.Optional()
+             from cb in Parse.Char(']')
+             select new SquareBracketExpressionNode(inner);
 
 
-        protected virtual Parser<ISyntaxNode> InnerExpression => Variable.Or(HexLiteral).Or(GroupedExpression);
-        
+        protected virtual Parser<ISyntaxNode> InnerExpression => BinaryExpression.Or(Number).Or(Variable).Or(HexLiteral).Or(GroupedExpression);
+
 
         public virtual Parser<ISyntaxNode> GroupedExpression => from l in Parse.Char('(')
-                   from os in Parse.WhiteSpace.Optional()
-                   from expr in Parse.Ref(() => InnerExpression)
-                   from oss in Parse.WhiteSpace.Optional()
-                   from r in Parse.Char(')')
-                   select expr;
+                                                                from os in Parse.WhiteSpace.Optional()
+                                                                from expr in Parse.Ref(() => InnerExpression)
+                                                                from oss in Parse.WhiteSpace.Optional()
+                                                                from r in Parse.Char(')')
+                                                                select expr;
 
+
+        public  Parser<ISyntaxNode> BinaryExpression =>
+       from body in Parse.Ref(() => Expr).End()
+       select body;
+
+        Parser<Operators> Operator => Choice(Parse.String("+").Return(Operators.Plus), Parse.String("-").Return(Operators.Minus), Parse.String("*").Return(Operators.Multiply), Parse.String("/").Return(Operators.Divide)).Token();
+
+          Parser<ISyntaxNode> Operand =>
+          Parse.Ref(() => InnerExpression)
+          .Token();
+
+          Parser<ISyntaxNode> Expr =>
+          Parse.ChainOperator(Operator, Operand, (Operators arg1, ISyntaxNode arg2, ISyntaxNode arg3) => new BinaryOperationNode(arg2, arg1, arg3));
     }
 }
