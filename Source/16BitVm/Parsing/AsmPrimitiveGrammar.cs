@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BitVm.Lib.Parsing.AST;
 using Sprache;
 
@@ -57,7 +58,7 @@ namespace BitVm.Lib.Parsing
         public virtual Parser<ISyntaxNode> HexLiteral =>
         from i in Parse.Char('$')
         from v in Parse.Many(HexDigit)
-        select new HexLiteralNode(string.Join("", v));
+        select new HexLiteralNode(Convert.ToInt16(string.Join("", v), 16));
 
         public virtual Parser<ISyntaxNode> Number =>
         from v in Parse.Many(Digit)

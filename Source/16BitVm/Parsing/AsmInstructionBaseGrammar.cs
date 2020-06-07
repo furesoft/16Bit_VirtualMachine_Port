@@ -1,4 +1,5 @@
-﻿using BitVm.Lib.Parsing.AST;
+﻿using System;
+using BitVm.Lib.Parsing.AST;
 using BitVm.Lib.Parsing.AST.Literals;
 using Sprache;
 
@@ -15,7 +16,7 @@ namespace BitVm.Lib.Parsing
 
         public virtual Parser<ISyntaxNode> Address => from c in Parse.Char('&')
                     from hex in Parse.Many(HexDigit)
-                    select new AddressLiteralNode(string.Join("", hex));
+                    select new AddressLiteralNode(Convert.ToInt16(string.Join("", hex), 16));
 
 
         protected Parser<ISyntaxNode> RegPtrinternal =>
