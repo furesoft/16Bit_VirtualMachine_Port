@@ -22,8 +22,7 @@ namespace BitVm.Lib.Parsing
 
         protected virtual Parser<ISyntaxNode> Op(string mnemonic)
         {
-            return RegReg(mnemonic).
-                Or(LitReg(mnemonic));
+            return Choice(RegReg(mnemonic), LitReg(mnemonic), RegLit(mnemonic));
         }
 
         public virtual Parser<ISyntaxNode> Add()
@@ -33,7 +32,7 @@ namespace BitVm.Lib.Parsing
             return Op(mnemonic);
         }
 
-        public virtual Parser<ISyntaxNode> sub()
+        public virtual Parser<ISyntaxNode> Sub()
         {
             const string mnemonic = "sub";
 
@@ -186,7 +185,7 @@ namespace BitVm.Lib.Parsing
             return Choice(
                   Mov(),
                   Add(),
-                  sub(),
+                  Sub(),
                   Inc(),
                   Dec(),
                   Mul(),

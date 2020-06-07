@@ -39,6 +39,14 @@ namespace BitVm.Lib.Parsing
                    select new InstructionNode(mnem, mnemonic + "_lit_reg", args);
         }
 
+        public virtual Parser<ISyntaxNode> RegLit(string mnemonic)
+        {
+            return from mnem in UpperOrLowerStr(mnemonic)
+                   from ws in Parse.WhiteSpace
+                   from args in DoubleArg(Register, HexLiteral.Or(SquareBracketExpression))
+                   select new InstructionNode(mnem, mnemonic + "_reg_lit", args);
+        }
+
         public virtual Parser<ISyntaxNode> RegReg(string mnemonic)
         {
             return from mnem in UpperOrLowerStr(mnemonic)
