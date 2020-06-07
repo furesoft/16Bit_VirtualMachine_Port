@@ -36,8 +36,14 @@ namespace BitVm.Lib.Parsing.AST
 
         }
 
-        public virtual void Visit(BinaryOperationNode binary) {
-            
+        public virtual void Visit(BinaryOperationNode binary)
+        {
+
+        }
+
+        public virtual void Visit(CompilationUnit cu)
+        {
+
         }
     }
 }

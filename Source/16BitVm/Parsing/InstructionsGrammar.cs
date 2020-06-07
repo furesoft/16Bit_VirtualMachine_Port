@@ -212,9 +212,9 @@ namespace BitVm.Lib.Parsing
 
         public virtual Parser<IEnumerable<ISyntaxNode>> Instructions() => Instruction().Many();
 
-        public static IEnumerable<ISyntaxNode> Parse(string source)
+        public static CompilationUnit Parse(string source)
         {
-            return new InstructionsGrammar().Instructions().Parse(source);
+            return new CompilationUnit(new InstructionsGrammar().Instructions().Parse(source));
         }
     }
 }
