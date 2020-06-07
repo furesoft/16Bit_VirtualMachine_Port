@@ -7,6 +7,17 @@ namespace BitVm.Lib
     public class Emitter
     {
         private ByteArrayBuilder _builder = new ByteArrayBuilder();
+        EmitVisitor _visitor;
+
+        public Emitter()
+        {
+
+        }
+
+        public Emitter(EmitVisitor visitor)
+        {
+            _visitor = visitor;
+        }
 
         public void EmitLit(HexLiteralNode lit)
         {
@@ -16,6 +27,24 @@ namespace BitVm.Lib
 
             _builder.Append(highByte);
             _builder.Append(lowByte);
+        }
+
+        public void EmitLit(IdNode node)
+        {
+            if (!_visitor.Labels.ContainsKey(node.Name) {
+                throw new Exception($"Label '{node.Name}' wasnt resolved");
+            }
+
+            EmitLit(new HexLiteralNode(_visitor.Labels[node.Name]));
+        }
+
+        public void EmitLit8(IdNode node)
+        {
+            if (!_visitor.Labels.ContainsKey(node.Name) {
+                throw new Exception($"Label '{node.Name}' wasnt resolved");
+            }
+
+            EmitLit8(new LiteralNode(_visitor.Labels[node.Name]));
         }
 
         public void EmitMem(AddressLiteralNode lit)
