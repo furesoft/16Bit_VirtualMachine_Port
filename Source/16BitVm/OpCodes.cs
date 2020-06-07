@@ -29,7 +29,7 @@
         INC_REG = 0x35,
         DEC_REG = 0x36,
 
-        JMP_NOT_EQ = 0x15,
+        JNE_Lit = 0x15,
         JNE_REG = 0x40,
         JEQ_REG = 0x3E,
         JEQ_LIT = 0x41,

@@ -1,9 +1,9 @@
 ﻿using System;
 namespace BitVm.Lib.Instructions.Jumps
 {
-    public class JmpNotEqualInstruction : IInstruction
+    public class JneLitInstruction : IInstruction
     {
-        public OpCodes Instruction => OpCodes.JMP_NOT_EQ;
+        public OpCodes Instruction => OpCodes.JNE_Lit;
         public InstructionTypeSizes Size => InstructionTypeSizes.LitMem;
         public string Mnemonic => "jne";
 
