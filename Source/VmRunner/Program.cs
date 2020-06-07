@@ -13,7 +13,7 @@ namespace VmRunner
         {
             string[] example = {
                 "my_label:",
-            "mov $4200, r1",
+            "mov $4200, &my_label",
             "mov r1, &0060",
             "mov $1300, r1",
             "mov &0060, r2",
@@ -31,12 +31,11 @@ namespace VmRunner
                 (byte)OpCodes.HLT
              };
 
+            SizeTable.Init();
+            EmitVisitor visitor = new EmitVisitor();
 
-            Emitter em = new Emitter();
-            foreach (InstructionNode i in iss.Children)
-            {
-                em.EmitInstruction(i);
-            }
+            Emitter em = new Emitter(visitor);
+            visitor.Visit(iss);
 
             var output = em.ToArray();
             var strOutp = string.Join(' ', output);

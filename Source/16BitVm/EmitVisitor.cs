@@ -21,7 +21,7 @@ namespace BitVm.Lib
                 else if(c is InstructionNode node)
                 {
                     _emitter.EmitInstruction(node);
-                    _currentAddress += node.GetTypeInfo().ToString()
+                    _currentAddress += (byte)SizeTable.GetEntry(node.Name);
                 }
             }
         }

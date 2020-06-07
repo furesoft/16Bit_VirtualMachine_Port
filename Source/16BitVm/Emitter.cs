@@ -31,7 +31,7 @@ namespace BitVm.Lib
 
         public void EmitLit(IdNode node)
         {
-            if (!_visitor.Labels.ContainsKey(node.Name) {
+            if (!_visitor.Labels.ContainsKey(node.Name)) {
                 throw new Exception($"Label '{node.Name}' wasnt resolved");
             }
 
@@ -40,7 +40,7 @@ namespace BitVm.Lib
 
         public void EmitLit8(IdNode node)
         {
-            if (!_visitor.Labels.ContainsKey(node.Name) {
+            if (!_visitor.Labels.ContainsKey(node.Name)) {
                 throw new Exception($"Label '{node.Name}' wasnt resolved");
             }
 
