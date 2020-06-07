@@ -28,17 +28,16 @@ namespace BitVm.Lib
             _builder.Append(lowByte);
         }
 
-        public void EmitLit8(AddressLiteralNode lit)
+        public void EmitLit8(LiteralNode lit)
         {
-            short val = lit.Address;
-            byte lowByte = (byte)(val & 0x00ff);
+            short val = (byte)lit.Value;
 
-            _builder.Append(lowByte);
+            _builder.Append(val);
         }
 
         public void EmitReg(RegisterLiteralNode lit)
         {
-            byte val = (byte)lit.Value;
+            byte val = (byte)(Registers)lit.Value;
 
             _builder.Append(val);
         }
@@ -51,6 +50,57 @@ namespace BitVm.Lib
         public void EmitInstruction(InstructionNode node)
         {
             EmitOpCode((OpCodes)Enum.Parse(typeof(OpCodes), node.Name, true));
+
+            var type = node.GetTypeInfo();
+            switch(type) {
+                case InstructionType.LitReg:
+                    EmitLit(node.GetArg<HexLiteralNode>(0));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(1));
+                    break;
+                case InstructionType.RegLit:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    EmitLit(node.GetArg<HexLiteralNode>(1));
+                    break;
+                case InstructionType.RegLit8:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    EmitLit8(node.GetArg<LiteralNode>(1));
+                    break;
+                case InstructionType.Reg:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    break;
+                case InstructionType.RegReg:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(1));
+                    break;
+                case InstructionType.RegPtrReg:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(1));
+                    break;
+                case InstructionType.Lit:
+                    EmitLit(node.GetArg<HexLiteralNode>(0));
+                    break;
+                case InstructionType.LitMem:
+                    EmitLit(node.GetArg<HexLiteralNode>(0));
+                    EmitMem(node.GetArg<AddressLiteralNode>(1));
+                    break;
+                case InstructionType.RegMem:
+                    EmitReg(node.GetArg<RegisterLiteralNode>(0));
+                    EmitMem(node.GetArg<AddressLiteralNode>(1));
+                    break;
+                case InstructionType.MemReg:
+                    EmitMem(node.GetArg<AddressLiteralNode>(0));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(1));
+                    break;
+                case InstructionType.LitOffReg:
+                    EmitLit(node.GetArg<HexLiteralNode>(0));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(1));
+                    EmitReg(node.GetArg<RegisterLiteralNode>(2));
+                    break;
+            }
+        }
+
+        public byte[] ToArray() {
+            return _builder.ToArray();
         }
     }
 }

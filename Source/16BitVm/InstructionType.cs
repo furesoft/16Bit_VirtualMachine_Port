@@ -9,5 +9,10 @@ namespace BitVm.Lib
         RegReg,
         RegMem,
         MemReg,
+        Reg,
+        Lit,
+        LitMem,
+        RegPtrReg,
+        LitOffReg,
     }
 }
