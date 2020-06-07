@@ -5,5 +5,9 @@ namespace BitVm.Lib
     {
         LitReg,
         RegLit,
+        RegLit8,
+        RegReg,
+        RegMem,
+        MemReg,
     }
 }

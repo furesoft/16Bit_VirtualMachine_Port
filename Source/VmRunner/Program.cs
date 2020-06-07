@@ -2,15 +2,34 @@
 using BitVm.Lib;
 using BitVm.Lib.Devices;
 using BitVm.Lib.Parsing;
+using BitVm.Lib.Parsing.AST;
 using Sprache;
 
 namespace VmRunner
 {
     class Program
-    {
+    { 
         static void Main(string[] args)
         {
-            var iss = InstructionsGrammar.Parse("mov $42, r4\nmov $42, r4");
+            string[] example = new string[] {
+            "mov $4200, r1",
+            "mov r1, &0060",
+            "mov $1300, r1",
+            "mov &0060, r2",
+            "add r1, r2",
+              };
+
+              var iss = InstructionsGrammar.Parse(string.Join('\n', example));
+
+
+            Emitter em = new Emitter();
+            foreach (InstructionNode i in iss.Children)
+            {
+                em.EmitInstruction(i);
+            }
+
+            var output = em.ToArray();
+            var strOutp = string.Join(' ', output);
             //var vvv = sg.SquareBracketExpression.Parse("[eax - 4]");
 
             var program = new byte[] {

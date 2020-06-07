@@ -35,7 +35,6 @@ namespace BitVm.Lib
 
                 Instructions.Add(instance.Instruction, instance);
             }
-
         }
 
         private void initRegisterMap()
