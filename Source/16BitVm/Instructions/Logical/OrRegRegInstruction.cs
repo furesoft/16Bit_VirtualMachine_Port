@@ -3,6 +3,8 @@
     public class OrRegRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.OR_REG_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "or";
 
         public bool Invoke(CPU cpu)
         {

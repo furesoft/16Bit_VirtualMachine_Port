@@ -3,6 +3,8 @@
     public class MovLitOffRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.MOV_LIT_OFF_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitOffReg;
+        public string Mnemonic => "move";
 
         public bool Invoke(CPU cpu)
         {

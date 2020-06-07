@@ -3,6 +3,8 @@
     public class LsfRegRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.LSF_REG_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "lsh";
 
         public bool Invoke(CPU cpu)
         {

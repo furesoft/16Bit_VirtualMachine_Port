@@ -3,6 +3,8 @@
     public class JgtRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JGT_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "jgt";
 
         public bool Invoke(CPU cpu)
         {

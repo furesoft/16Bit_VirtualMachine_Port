@@ -4,6 +4,8 @@ namespace BitVm.Lib.Instructions.Shifting
     public class LsfRegLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.LSF_REG_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit8;
+        public string Mnemonic => "lsh";
 
         public bool Invoke(CPU cpu)
         {

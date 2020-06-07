@@ -3,6 +3,8 @@
     public class MovLitRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.MOV_LIT_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitReg;
+        public string Mnemonic => "move";
 
         public bool Invoke(CPU cpu)
         {

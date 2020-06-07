@@ -4,6 +4,9 @@
     {
         public OpCodes Instruction => OpCodes.SUB_REG_LIT;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "sub";
+
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();

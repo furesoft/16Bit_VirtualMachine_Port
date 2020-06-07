@@ -3,6 +3,8 @@
     public class XOrRegLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.XOR_REG_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "xor";
 
         public bool Invoke(CPU cpu)
         {

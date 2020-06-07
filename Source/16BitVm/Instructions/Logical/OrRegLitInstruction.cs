@@ -3,6 +3,8 @@
     public class OrRegLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.OR_REG_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "or";
 
         public bool Invoke(CPU cpu)
         {

@@ -3,6 +3,8 @@
     public class MovRegRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.MOV_REG_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "move";
 
         public bool Invoke(CPU cpu)
         {

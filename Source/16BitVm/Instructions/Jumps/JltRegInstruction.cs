@@ -3,6 +3,8 @@
     public class JltRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JLT_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "jlt";
 
         public bool Invoke(CPU cpu)
         {

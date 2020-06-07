@@ -3,6 +3,8 @@
     public class JgeLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JGE_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegMem;
+        public string Mnemonic => "jge";
 
         public bool Invoke(CPU cpu)
         {

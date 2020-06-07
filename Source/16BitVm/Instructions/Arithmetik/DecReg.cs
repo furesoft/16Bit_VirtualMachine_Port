@@ -4,6 +4,9 @@
     {
         public OpCodes Instruction => OpCodes.DEC_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.SingleReg;
+        public string Mnemonic => "dec";
+
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();

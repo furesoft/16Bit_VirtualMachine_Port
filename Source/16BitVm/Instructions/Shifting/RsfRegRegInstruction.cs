@@ -3,6 +3,8 @@
     public class RsfRegRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.RSF_REG_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "rsh";
 
         public bool Invoke(CPU cpu)
         {

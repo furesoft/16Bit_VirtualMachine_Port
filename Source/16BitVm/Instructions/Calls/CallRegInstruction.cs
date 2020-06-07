@@ -3,6 +3,8 @@
     public class CallRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.CAL_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.SingleReg;
+        public string Mnemonic => "call";
 
         public bool Invoke(CPU cpu)
         {

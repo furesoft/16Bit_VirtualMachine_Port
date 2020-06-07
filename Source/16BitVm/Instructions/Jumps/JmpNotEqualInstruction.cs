@@ -4,6 +4,8 @@ namespace BitVm.Lib.Instructions.Jumps
     public class JmpNotEqualInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JMP_NOT_EQ;
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitMem;
+        public string Mnemonic => "jne";
 
         public bool Invoke(CPU cpu)
         {

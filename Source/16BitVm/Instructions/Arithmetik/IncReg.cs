@@ -5,6 +5,8 @@ namespace BitVm.Lib.Instructions.Arithmetik
     {
         public OpCodes Instruction => OpCodes.INC_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.SingleReg;
+        public string Mnemonic => "inc";
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();

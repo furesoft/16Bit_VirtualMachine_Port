@@ -3,6 +3,9 @@
     public class JeLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JEQ_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitMem;
+
+        public string Mnemonic => "je";
 
         public bool Invoke(CPU cpu)
         {

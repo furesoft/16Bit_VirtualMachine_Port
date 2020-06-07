@@ -3,6 +3,8 @@
     public class JleRegInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JLE_REG;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "jle";
 
         public bool Invoke(CPU cpu)
         {

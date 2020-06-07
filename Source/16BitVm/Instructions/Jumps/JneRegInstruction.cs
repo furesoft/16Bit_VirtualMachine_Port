@@ -4,6 +4,10 @@
     {
         public OpCodes Instruction => OpCodes.JNE_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegMem;
+
+        public string Mnemonic => "jne";
+
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();

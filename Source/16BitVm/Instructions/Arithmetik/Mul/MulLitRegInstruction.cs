@@ -5,6 +5,9 @@ namespace BitVm.Lib.Instructions.Arithmetik.Mul
     {
         public OpCodes Instruction => OpCodes.MUL_LIT_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitReg;
+        public string Mnemonic => "mul";
+
         public bool Invoke(CPU cpu)
         {
             var literal = cpu.Fetch16();

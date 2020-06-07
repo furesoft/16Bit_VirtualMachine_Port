@@ -3,6 +3,8 @@
     public class NotInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.NOT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.SingleReg;
+        public string Mnemonic => "not";
 
         public bool Invoke(CPU cpu)
         {

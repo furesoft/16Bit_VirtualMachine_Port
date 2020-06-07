@@ -5,6 +5,7 @@ namespace BitVm.Lib
     {
         InstructionTypeSizes Size { get; }
         OpCodes Instruction { get; }
+        string Mnemonic { get; }
         bool Invoke(CPU cpu);
     }
 }

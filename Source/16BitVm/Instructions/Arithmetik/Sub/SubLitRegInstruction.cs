@@ -5,6 +5,9 @@ namespace BitVm.Lib.Instructions.Arithmetik.Sub
     {
         public OpCodes Instruction => OpCodes.SUB_LIT_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitReg;
+        public string Mnemonic => "sub";
+
         public bool Invoke(CPU cpu)
         {
             var literal = cpu.Fetch16();

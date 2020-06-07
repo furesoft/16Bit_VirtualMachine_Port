@@ -4,6 +4,8 @@ namespace BitVm.Lib.Instructions.Logical
     public class AndRegLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.AND_REG_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegLit;
+        public string Mnemonic => "and";
 
         public bool Invoke(CPU cpu)
         {

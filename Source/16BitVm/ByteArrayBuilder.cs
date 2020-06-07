@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+
 namespace BitVm.Lib
 {
     public class ByteArrayBuilder : IDisposable

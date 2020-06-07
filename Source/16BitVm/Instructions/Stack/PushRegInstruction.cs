@@ -4,6 +4,9 @@
     {
         public OpCodes Instruction => OpCodes.PSH_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.SingleReg;
+        public string Mnemonic => "push";
+
         public bool Invoke(CPU cpu)
         {
             var register = cpu.FetchRegister();

@@ -4,6 +4,9 @@
     {
         public OpCodes Instruction => OpCodes.MUL_REG_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "mul";
+
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();

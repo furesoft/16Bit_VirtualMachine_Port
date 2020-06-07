@@ -3,6 +3,8 @@
     public class JleLitInstruction : IInstruction
     {
         public OpCodes Instruction => OpCodes.JLE_LIT;
+        public InstructionTypeSizes Size => InstructionTypeSizes.LitMem;
+        public string Mnemonic => "jle";
 
         public bool Invoke(CPU cpu)
         {

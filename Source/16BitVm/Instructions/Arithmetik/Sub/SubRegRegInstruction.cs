@@ -4,6 +4,8 @@
     {
         public OpCodes Instruction => OpCodes.SUB_REG_REG;
 
+        public InstructionTypeSizes Size => InstructionTypeSizes.RegReg;
+        public string Mnemonic => "sub";
         public bool Invoke(CPU cpu)
         {
             var r1 = cpu.FetchRegister();
