@@ -66,14 +66,18 @@ namespace BitVm.Lib.Parsing
 
 
         public virtual Parser<IdNode> ValidIdentifier =>
-            from id in Parse.Identifier(Parse.Letter, Parse.LetterOrDigit)
+            from id in Parse.Identifier(Parse.Letter, Parse.LetterOrDigit.Or(Parse.Char('_')))
             select new IdNode(id);
 
 
         public virtual Parser<ISyntaxNode> Variable => from c in Parse.Char('!')
                                                        from name in ValidIdentifier
-                                                       select name;                                              
+                                                       select name;
 
+        public virtual Parser<LabelNode> Label => from id in ValidIdentifier
+                                                  from colon in Parse.Char(':')
+                                                  from os in Parse.WhiteSpace.Optional()
+                                                  select new LabelNode(id.Name);
 
         public virtual Parser<ISyntaxNode> SquareBracketExpression =>
              from ob in Parse.Char('[')
