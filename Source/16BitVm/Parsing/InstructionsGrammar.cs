@@ -1,4 +1,5 @@
-﻿using BitVm.Lib.Parsing.AST;
+﻿using System.Collections.Generic;
+using BitVm.Lib.Parsing.AST;
 using Sprache;
 
 namespace BitVm.Lib.Parsing
@@ -209,9 +210,11 @@ namespace BitVm.Lib.Parsing
              );
         }
 
-        public static ISyntaxNode Parse(string source)
+        public virtual Parser<IEnumerable<ISyntaxNode>> Instructions() => Instruction().Many();
+
+        public static IEnumerable<ISyntaxNode> Parse(string source)
         {
-            return new InstructionsGrammar().Instruction().Parse(source);
+            return new InstructionsGrammar().Instructions().Parse(source);
         }
     }
 }
