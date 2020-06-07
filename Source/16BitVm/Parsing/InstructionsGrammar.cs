@@ -21,6 +21,7 @@ namespace BitVm.Lib.Parsing
             );
         }
 
+
         protected virtual Parser<ISyntaxNode> Op(string mnemonic)
         {
             return Choice(RegReg(mnemonic), LitReg(mnemonic), RegLit(mnemonic));
@@ -208,13 +209,6 @@ namespace BitVm.Lib.Parsing
                   Ret(),
                   Hlt()
              );
-        }
-
-        public virtual Parser<IEnumerable<ISyntaxNode>> Instructions() => Instruction().Many();
-
-        public static CompilationUnit Parse(string source)
-        {
-            return new CompilationUnit(new InstructionsGrammar().Instructions().Parse(source));
         }
     }
 }
