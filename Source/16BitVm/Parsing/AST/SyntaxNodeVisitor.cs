@@ -45,5 +45,10 @@ namespace BitVm.Lib.Parsing.AST
         {
 
         }
+
+        public virtual void Visit(LabelNode cu)
+        {
+
+        }
     }
 }
