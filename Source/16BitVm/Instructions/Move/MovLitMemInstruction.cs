@@ -10,7 +10,7 @@
         {
             var value = cpu.Fetch16();
             var address = cpu.Fetch16();
-            MemoryMapper.SetUInt16(address, value);
+            MemoryMapper.SetUInt16(address, value, cpu);
 
             return false;
         }

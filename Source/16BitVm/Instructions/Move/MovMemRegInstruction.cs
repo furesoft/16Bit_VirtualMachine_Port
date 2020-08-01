@@ -10,7 +10,7 @@
         {
             var address = cpu.Fetch16();
             var registerTo = cpu.FetchRegister();
-            var value = MemoryMapper.GetUInt16(address);
+            var value = MemoryMapper.GetUInt16(address, cpu);
 
             cpu.SetRegister(registerTo, value);
 

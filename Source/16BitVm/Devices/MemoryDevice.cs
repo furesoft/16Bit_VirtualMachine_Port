@@ -17,22 +17,22 @@ namespace BitVm.Lib.Devices
             data = new byte[100];
         }
 
-        public ushort GetUInt16(ushort address)
+        public ushort GetUInt16(ushort address, CPU cpu)
         {
             return data.GetUInt16(address);
         }
 
-        public byte GetUInt8(ushort address)
+        public byte GetUInt8(ushort address, CPU cpu)
         {
             return 0;
         }
 
-        public void SetUInt16(ushort address, ushort value)
+        public void SetUInt16(ushort address, ushort value, CPU cpu)
         {
             data.SetUInt16(address, value);
         }
 
-        public void SetUInt8(ushort address, ushort value)
+        public void SetUInt8(ushort address, ushort value, CPU cpu)
         {
 
         }

@@ -13,7 +13,7 @@
             var r2 = cpu.FetchRegister();
             var offset = cpu.GetRegister(r1);
 
-            var value = MemoryMapper.GetUInt16((ushort)(baseAddress + offset));
+            var value = MemoryMapper.GetUInt16((ushort)(baseAddress + offset), cpu);
             cpu.SetRegister(r2, value);
 
             return false;

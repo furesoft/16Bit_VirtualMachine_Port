@@ -24,44 +24,44 @@ namespace BitVm.Lib
             return region.First();
         }
 
-        public static ushort GetUInt16(ushort address)
+        public static ushort GetUInt16(ushort address, CPU cpu)
         {
             var region = FindRegion(address);
             var finalAddress = region.Remap
               ? address - region.Start
               : address;
 
-            return region.Device.GetUInt16((ushort)finalAddress);
+            return region.Device.GetUInt16((ushort)finalAddress, cpu);
         }
 
-        public static byte GetUInt8(ushort address)
+        public static byte GetUInt8(ushort address, CPU cpu)
         {
             var region = FindRegion(address);
             var finalAddress = region.Remap
               ? address - region.Start
               : address;
 
-            return region.Device.GetUInt8((ushort)finalAddress);
+            return region.Device.GetUInt8((ushort)finalAddress,cpu);
         }
 
-        public static void SetUInt16(ushort address, ushort value)
+        public static void SetUInt16(ushort address, ushort value, CPU cpu)
         {
             var region = FindRegion(address);
             var finalAddress = region.Remap
               ? address - region.Start
               : address;
 
-            region.Device.SetUInt16((ushort)finalAddress, value);
+            region.Device.SetUInt16((ushort)finalAddress, value, cpu);
         }
 
-        public static void SetUInt8(ushort address, ushort value)
+        public static void SetUInt8(ushort address, ushort value, CPU cpu)
         {
             var region = FindRegion(address);
             var finalAddress = region.Remap
               ? address - region.Start
               : address;
 
-            region.Device.SetUInt8((ushort)finalAddress, value);
+            region.Device.SetUInt8((ushort)finalAddress, value, cpu);
         }
     }
 }

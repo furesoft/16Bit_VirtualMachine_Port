@@ -11,7 +11,7 @@
             var r1 = cpu.FetchRegister();
             var r2 = cpu.FetchRegister();
             var ptr = cpu.GetRegister(r1);
-            var value = MemoryMapper.GetUInt16(ptr);
+            var value = MemoryMapper.GetUInt16(ptr, cpu);
 
             cpu.SetRegister(r2, value);
 

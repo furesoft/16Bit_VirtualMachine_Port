@@ -8,17 +8,17 @@ namespace BitVm.Lib.Devices
             return new ScreenDevice();
         }
 
-        public ushort GetUInt16(ushort address)
+        public ushort GetUInt16(ushort address, CPU cpu)
         {
             return 0;
         }
 
-        public byte GetUInt8(ushort address)
+        public byte GetUInt8(ushort address, CPU cpu)
         {
             return 0;
         }
 
-        public void SetUInt16(ushort address, ushort data)
+        public void SetUInt16(ushort address, ushort data, CPU cpu)
         {
             var command = (data & 0xff00) >> 8;
             var characterValue = data & 0x00ff;
@@ -32,7 +32,7 @@ namespace BitVm.Lib.Devices
             Console.Write(character);
         }
 
-        public void SetUInt8(ushort address, ushort value)
+        public void SetUInt8(ushort address, ushort value, CPU cpu)
         {
             //nothing to do
         }

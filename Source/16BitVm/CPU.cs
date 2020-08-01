@@ -12,6 +12,7 @@ namespace BitVm.Lib
         public Dictionary<OpCodes, IInstruction> Instructions;
         public int StackFrameSize = 0;
 
+
         public CPU(byte[] program)
         {
             RegisterMap = new Dictionary<Registers, int>();
@@ -50,7 +51,7 @@ namespace BitVm.Lib
 
         public ushort GetRegister(Registers reg)
         {
-            return MemoryMapper.GetUInt16((ushort)RegisterMap[reg]);
+            return MemoryMapper.GetUInt16((ushort)RegisterMap[reg], this);
         }
 
         public ushort GetRegister(byte reg)
@@ -60,7 +61,7 @@ namespace BitVm.Lib
 
         public void SetRegister(Registers reg, ushort value)
         {
-            MemoryMapper.SetUInt16((ushort)RegisterMap[reg], value);
+            MemoryMapper.SetUInt16((ushort)RegisterMap[reg], value, this);
         }
 
         public void SetRegister(byte reg, ushort value)
@@ -128,7 +129,7 @@ namespace BitVm.Lib
         public void Push(ushort value)
         {
             var spAddress = GetRegister(Registers.SP);
-            MemoryMapper.SetUInt16(spAddress, value);
+            MemoryMapper.SetUInt16(spAddress, value, this);
             SetRegister(Registers.SP, (ushort)(spAddress - 2));
             StackFrameSize += 2;
         }
@@ -139,7 +140,7 @@ namespace BitVm.Lib
             SetRegister(Registers.SP, (ushort)nextSpAddress);
             StackFrameSize -= 2;
 
-            return MemoryMapper.GetUInt16((ushort)nextSpAddress);
+            return MemoryMapper.GetUInt16((ushort)nextSpAddress, this);
         }
 
         public void PushState()
