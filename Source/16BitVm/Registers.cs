@@ -16,5 +16,6 @@ namespace BitVm.Lib
         R8,
         SP,
         FP,
+        MB,
     }
 }
