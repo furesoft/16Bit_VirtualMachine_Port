@@ -2,8 +2,6 @@
 using BitVm.Lib;
 using BitVm.Lib.Devices;
 using BitVm.Lib.Parsing;
-using BitVm.Lib.Parsing.AST;
-using Sprache;
 
 namespace VmRunner
 {
@@ -40,14 +38,22 @@ namespace VmRunner
             var output = em.ToArray();
             var strOutp = string.Join(' ', output);
             //var vvv = sg.SquareBracketExpression.Parse("[eax - 4]");
-
-             
-            MemoryMapper.Map(new MemoryDevice(), 0, 100);
+            
+            MemoryMapper.Map(new MemoryBankedDevice(8), 0, 0xff);
+            MemoryMapper.Map(new MemoryDevice(), 0xff, 0xffff, true);
 
             // Map 0xFF bytes of the address space to an "output device" - just stdout
             MemoryMapper.Map(new ScreenDevice(), 0xff, 0x30ff, true);
 
+            
+
             var cpu = new CPU(program);
+            
+            MemoryMapper.SetUInt16(0, 1, cpu);
+
+            var testValueBanked = MemoryMapper.GetUInt16(0, cpu);
+
+            cpu.SetRegister(Registers.MB, 1);
             cpu.Run();
 
             cpu.DumpRegisters();

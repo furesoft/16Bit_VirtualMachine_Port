@@ -19,7 +19,6 @@
     <Folder Include="Instructions\Jumps\" />
     <Folder Include="Instructions\Stack\" />
     <Folder Include="Instructions\Calls\" />
-    <Folder Include="Devices\" />
     <Folder Include="Instructions\Arithmetik\Sub\" />
     <Folder Include="Instructions\Arithmetik\Mul\" />
     <Folder Include="Instructions\Shifting\" />
