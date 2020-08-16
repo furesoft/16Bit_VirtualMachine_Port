@@ -6,7 +6,7 @@ namespace BitVm.Lib
 {
     public class MemoryMapper
     {
-        private static List<MemoryRegion> regions = new List<MemoryRegion>();
+        private static readonly List<MemoryRegion> regions = new List<MemoryRegion>();
 
         public static void Map(IDevice device, ushort start, ushort end, bool remap = true)
         {

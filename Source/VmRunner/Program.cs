@@ -1,13 +1,12 @@
 ﻿using System;
 using BitVm.Lib;
 using BitVm.Lib.Devices;
-using BitVm.Lib.Parsing;
 
 namespace VmRunner
 {
-    class Program
+    internal static class Program
     { 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var program = new byte[] {
                 (byte)OpCodes.MOV_LIT_REG, 65, 0xFF, (byte)Registers.R5, // write A
@@ -27,10 +26,8 @@ namespace VmRunner
             // Map 0xFF bytes of the address space to an "output device" - just stdout
             MemoryMapper.Map(new ScreenDevice(), 0xff, 0x30ff, true);
 
-            
-
             var cpu = new CPU(program);
-            
+
             MemoryMapper.SetUInt16(64, 1, cpu);
 
             var testValueBanked = MemoryMapper.GetUInt16(64, cpu);
