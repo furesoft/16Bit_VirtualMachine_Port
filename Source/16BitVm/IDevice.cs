@@ -2,7 +2,7 @@
 {
     public interface IDevice
     {
-        void SetUInt8(ushort address, ushort value, CPU cpu);
+        void SetUInt8(ushort address, byte value, CPU cpu);
         void SetUInt16(ushort address, ushort value, CPU cpu);
 
         byte GetUInt8(ushort address, CPU cpu);
