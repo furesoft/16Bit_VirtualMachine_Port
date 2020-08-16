@@ -12,7 +12,6 @@
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Instructions\" />
     <Folder Include="Instructions\Move\" />
     <Folder Include="Instructions\Arithmetik\" />
     <Folder Include="Instructions\Arithmetik\Add\" />

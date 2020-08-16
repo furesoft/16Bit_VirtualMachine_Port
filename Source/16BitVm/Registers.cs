@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BitVm.Lib
+﻿namespace BitVm.Lib
 {
     public enum Registers
     {
@@ -17,5 +15,6 @@ namespace BitVm.Lib
         SP,
         FP,
         MB,
+        IM,
     }
 }

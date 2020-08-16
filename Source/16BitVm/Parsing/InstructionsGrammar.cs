@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BitVm.Lib.Parsing.AST;
+﻿using BitVm.Lib.Parsing.AST;
 using Sprache;
 
 namespace BitVm.Lib.Parsing
@@ -182,6 +181,16 @@ namespace BitVm.Lib.Parsing
             return NoArg("hlt");
         }
 
+        public virtual Parser<ISyntaxNode> RTI()
+        {
+            return NoArg("rti");
+        }
+
+        public virtual Parser<ISyntaxNode> INT()
+        {
+            return SingleLit("int");
+        }
+
         public virtual Parser<ISyntaxNode> Instruction()
         {
             return Choice(
@@ -207,7 +216,9 @@ namespace BitVm.Lib.Parsing
                   Pop(),
                   Cal(),
                   Ret(),
-                  Hlt()
+                  Hlt(),
+                  RTI(),
+                  INT()
              );
         }
     }

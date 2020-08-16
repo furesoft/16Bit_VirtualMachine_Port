@@ -10,21 +10,47 @@ namespace BitVm.Lib
         public Dictionary<Registers, int> RegisterMap;
         public byte[] Program;
         public Dictionary<OpCodes, IInstruction> Instructions;
+        public bool IsInInterruptHandler;
+
+        public int InterruptVectorAddress;
+
         public int StackFrameSize = 0;
 
 
-        public CPU(byte[] program)
+        public CPU(byte[] program, int interruptVectorAddress = 0x1000)
         {
             RegisterMap = new Dictionary<Registers, int>();
             Instructions = new Dictionary<OpCodes, IInstruction>();
+            InterruptVectorAddress = interruptVectorAddress;
+
 
             initRegisterMap();
             SetRegister(Registers.SP, 0xffff - 1);
             SetRegister(Registers.FP, 0xffff - 1);
+            SetRegister(Registers.IM, 0xffff);
 
             Program = program;
 
             initInstructions();
+        }
+
+        public void HandleInterrupt(ushort value)
+        {
+            var vectorIndex = value & 0xf;
+            var isUnmasked = ((1 << vectorIndex) & GetRegister(Registers.IM)) == 1;
+            if(!isUnmasked)
+            {
+                var addrPointer = InterruptVectorAddress + (vectorIndex * 2);
+                var address = MemoryMapper.GetUInt16((ushort)addrPointer, this);
+
+                if(!IsInInterruptHandler)
+                {
+                    Push(0);
+                    PushState();
+                    IsInInterruptHandler = true;
+                    SetRegister(Registers.IP, address);
+                }
+            }
         }
 
         private void initInstructions()

@@ -59,6 +59,7 @@
         XOR_REG_LIT = 0x32,
         XOR_REG_REG = 0x33,
         NOT = 0x34,
-
+        INT = 0x0,
+        RET_INT = 0x1,
     }
 }
