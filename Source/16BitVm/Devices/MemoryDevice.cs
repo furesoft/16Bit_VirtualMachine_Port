@@ -32,7 +32,7 @@ namespace BitVm.Lib.Devices
             data.SetUInt16(address, value);
         }
 
-        public void SetUInt8(ushort address, ushort value, CPU cpu)
+        public void SetUInt8(ushort address, byte value, CPU cpu)
         {
 
         }
