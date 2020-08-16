@@ -54,7 +54,7 @@ namespace BitVm.Lib
             region.Device.SetUInt16((ushort)finalAddress, value, cpu);
         }
 
-        public static void SetUInt8(ushort address, ushort value, CPU cpu)
+        public static void SetUInt8(ushort address, byte value, CPU cpu)
         {
             var region = FindRegion(address);
             var finalAddress = region.Remap

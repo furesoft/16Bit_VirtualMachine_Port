@@ -21,8 +21,8 @@ namespace VmRunner
             SizeTable.Init();
 
             MemoryMapper.Map(new RegisterMemoryDevice(), 0, 30, true);
-            MemoryMapper.Map(new MemoryBankedDevice(4), 64, 0xff+31, true);
-            MemoryMapper.Map(new MemoryDevice(), 0xff+61, 0xffff, true);
+            MemoryMapper.Map(new MemoryBankedDevice(4, sizeof(short) * 4), 64, 0x11E, true);
+            MemoryMapper.Map(new MemoryDevice(), 0x13C, 0xffff, true);
 
             // Map 0xFF bytes of the address space to an "output device" - just stdout
             MemoryMapper.Map(new ScreenDevice(), 0xff, 0x30ff, true);
@@ -31,11 +31,18 @@ namespace VmRunner
 
             var cpu = new CPU(program);
             
-            MemoryMapper.SetUInt16(0, 1, cpu);
+            MemoryMapper.SetUInt16(64, 1, cpu);
 
-            var testValueBanked = MemoryMapper.GetUInt16(0, cpu);
+            var testValueBanked = MemoryMapper.GetUInt16(64, cpu);
 
             cpu.SetRegister(Registers.MB, 1);
+
+            MemoryMapper.SetUInt16(64, 42, cpu);
+            var testValueBanked2 = MemoryMapper.GetUInt16(64, cpu);
+
+            cpu.SetRegister(Registers.MB, 0);
+            var testValueBanked3 = MemoryMapper.GetUInt16(64, cpu);
+
             cpu.Run();
 
             cpu.DumpRegisters();

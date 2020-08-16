@@ -8,6 +8,5 @@
         byte GetUInt8(ushort address, CPU cpu);
         ushort GetUInt16(ushort address, CPU cpu);
 
-        IDevice Create(int size);
     }
 }

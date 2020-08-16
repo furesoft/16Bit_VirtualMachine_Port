@@ -6,20 +6,15 @@ namespace BitVm.Lib.Devices
     public class MemoryBankedDevice : IDevice
     {
         private byte[][] buffers;
-        public MemoryBankedDevice(int bankCount)
+        public MemoryBankedDevice(int bankCount, int size)
         {
             BankCount = bankCount;
+
+            buffers = (from b in Enumerable.Range(0, BankCount)
+                       select new byte[size]).ToArray();
         }
 
         public int BankCount { get; }
-
-        public IDevice Create(int size) //bank size
-        {
-            buffers = (from b in Enumerable.Range(0, BankCount)
-                          select new byte[size]).ToArray();
-
-            return new MemoryBankedDevice(BankCount);
-        }
 
         public ushort GetUInt16(ushort address, CPU cpu)
         {
